@@ -1,0 +1,51 @@
+.skeleton-container {
+  display: flex;
+  justify-content: center;
+}
+.soloSkeleton {
+  margin-top: 2rem;
+  margin-left: 5rem;
+  width: 300px;
+  height: 350px;
+}
+/* hello */
+
+.skeleton-container {
+  height: 200px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+.title-container {
+  margin-top: 1rem;
+}
+.skeletonStyle-title {
+  height: 20px;
+  width: 100px;
+  margin-left: 4.5rem;
+}
+.actionConatiner {
+  display: flex;
+  margin-top: 5rem;
+  justify-content: space-around;
+}
+.skeletonStyle-image {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.Like {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+.Share {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+.Time {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}

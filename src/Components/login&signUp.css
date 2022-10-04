@@ -1,0 +1,124 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+}
+.header-1 {
+  color: blueviolet;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.google-icon {
+  font-size: 35px;
+  margin-left: 1.5rem;
+}
+
+.orText {
+  margin-top: 1rem;
+  margin-left: 9rem;
+}
+.googleBtn-container {
+  width: 277px;
+  margin-left: 0.75rem;
+  display: flex;
+  margin-top: 1rem;
+  background-color: whitesmoke;
+}
+.googleBtn-container:hover {
+  cursor: pointer;
+  border: 1px solid gray;
+}
+.signUp-text {
+  margin-top: 1.5rem;
+  margin-left: 2rem;
+  margin-bottom: 0.5rem;
+}
+.signUp {
+  border-radius: 10px;
+  height: 300px;
+  width: 300px;
+  background-color: whitesmoke;
+  border: 1px solid whitesmoke;
+  box-shadow: 5px 5px 8px 3px #aaaaaa;
+}
+
+.login {
+  border-radius: 10px;
+  height: fit-content;
+  width: 300px;
+  background-color: whitesmoke;
+  border: 1px solid whitesmoke;
+  box-shadow: 5px 5px 8px 3px #aaaaaa;
+}
+.error {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+.eye-container {
+  display: block;
+  position: absolute;
+  font-size: 20px;
+  margin-top: 0.5rem;
+  margin-left: 15rem;
+  cursor: pointer;
+}
+
+.input-password-container {
+  display: flex;
+  justify-content: center;
+  border: 1px solid gray;
+  margin-left: 0.75rem;
+  margin-top: 1rem;
+  width: 277px;
+  height: 33px;
+  border: none;
+}
+
+.input {
+  font-size: 15px;
+  padding-left: 5px;
+  margin-top: 1rem;
+  margin-left: 0.75rem;
+  height: 30px;
+  width: 270px;
+  border-radius: 0.25rem;
+  border: 1px solid grey;
+}
+.input-password {
+  font-size: 15px;
+  padding-left: 0.4rem;
+  height: 30px;
+  border-radius: 0.25rem;
+  width: 300px;
+  border: 1px solid grey;
+}
+.input-password:hover {
+  border: 2px solid blueviolet;
+}
+
+.input:hover {
+  border: 2px solid blueviolet;
+}
+
+.button-login {
+  cursor: pointer;
+  margin-left: 7.25rem;
+  margin-top: 1rem;
+  height: 30px;
+  width: 65px;
+  background-color: blueviolet;
+  border: none;
+  border-radius: 4px;
+  color: white;
+}
+.button-login:hover {
+  border: 1px solid white;
+}
+.login-text {
+  margin-top: 7px;
+  margin-left: 1rem;
+}
