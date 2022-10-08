@@ -3,19 +3,14 @@ import "./navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { BsStars } from "react-icons/bs";
 import { BsChatDots } from "react-icons/bs";
-import {
-  getDocs,
-  collection,
-  doc,
-  updateDoc,
-  setDoc
-} from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import { useUserAuth } from "../Context/userAuthContext";
 
 function Navbar() {
   const { user, logout } = useUserAuth();
   const [renderChat, setRenderChat] = useState(false);
+  const [chats, setChats] = useState("");
   const [profile, setProfile] = useState();
 
   useEffect(() => {
@@ -24,7 +19,28 @@ function Navbar() {
       setProfile(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getProfile();
+
+    const getChatsData = async () => {
+      const get = await getDocs(collection(db, "chats"));
+      setChats(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getChatsData();
   }, []);
+
+  useEffect(() => {
+    profile.map((soloUser) => {
+      return chats
+        ? chats.map((chatDoc) => {
+            return (soloUser.userId > user.uid
+              ? soloUser.userId + user.uid
+              : user.uid + soloUser.userId) !== chatDoc.id
+              ? setRenderChat(false)
+              : "";
+          })
+        : "";
+    });
+  });
+
   useEffect(() => {
     if (user) {
       profile &&
