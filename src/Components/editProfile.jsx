@@ -62,7 +62,7 @@ function EditProfile() {
         ? await updateDoc(doc(db, "users", soloUser.id), {
             ...soloUser,
             userName,
-            iseEdit: false,
+            isEdit: false,
             userAvatar,
             userStatus,
             userCountry: userLocation
