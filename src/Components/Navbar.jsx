@@ -28,7 +28,7 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (user.uid) {
+    if (user) {
       profile &&
         profile.map((soloUser) => {
           return chats
