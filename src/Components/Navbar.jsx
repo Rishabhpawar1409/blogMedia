@@ -28,17 +28,20 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
-    profile.map((soloUser) => {
-      return chats
-        ? chats.map((chatDoc) => {
-            return (soloUser.userId > user.uid
-              ? soloUser.userId + user.uid
-              : user.uid + soloUser.userId) !== chatDoc.id
-              ? setRenderChat(false)
-              : "";
-          })
-        : "";
-    });
+    if (user.uid) {
+      profile &&
+        profile.map((soloUser) => {
+          return chats
+            ? chats.map((chatDoc) => {
+                return (soloUser.userId > user.uid
+                  ? soloUser.userId + user.uid
+                  : user.uid + soloUser.userId) !== chatDoc.id
+                  ? setRenderChat(false)
+                  : "";
+              })
+            : "";
+        });
+    }
   });
 
   useEffect(() => {
