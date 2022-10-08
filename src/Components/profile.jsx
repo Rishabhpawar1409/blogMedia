@@ -40,12 +40,16 @@ function Profile() {
     };
     getChats();
   }, []);
+
   useEffect(() => {
     profile &&
       profile.map((checker) => {
         return checker.userId.includes(user.uid) ? setNewProfile(false) : "";
       });
-  }, [user.uid, profile]);
+    if (location.hash === "#singleUser") {
+      setNewProfile(false);
+    }
+  }, [user.uid, profile, location.hash]);
 
   const idDecider = () => {
     if (location.hash === "#singleUser") {

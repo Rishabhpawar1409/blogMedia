@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { BsStars } from "react-icons/bs";
 import { BsChatDots } from "react-icons/bs";
+import {
+  getDocs,
+  collection,
+  doc,
+  updateDoc,
+  setDoc
+} from "firebase/firestore";
+import { db } from "../firebase";
 import { useUserAuth } from "../Context/userAuthContext";
 
 function Navbar() {
   const { user, logout } = useUserAuth();
+  const [renderChat, setRenderChat] = useState(false);
+  const [profile, setProfile] = useState();
 
+  useEffect(() => {
+    const getProfile = async () => {
+      const get = await getDocs(collection(db, "users"));
+      setProfile(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getProfile();
+  }, []);
+  useEffect(() => {
+    if (user) {
+      profile &&
+        profile.map((checker) => {
+          return checker.userId.includes(user.uid) ? setRenderChat(true) : "";
+        });
+    }
+  });
   const navigate = useNavigate();
   const handleLogout = async () => {
     await logout();
@@ -47,11 +72,16 @@ function Navbar() {
                 <p>Profile</p>
               </Link>
             </div>
-            <div>
-              <Link to="/chat" className="chat-link">
-                <BsChatDots />
-              </Link>
-            </div>
+            {renderChat === true ? (
+              <div>
+                <Link to="/chat" className="chat-link">
+                  <BsChatDots />
+                </Link>
+              </div>
+            ) : (
+              ""
+            )}
+
             <div className="nav-favroite">
               <Link to="/favourite">
                 <BsStars className="favourite-icon" />
