@@ -35,9 +35,9 @@ function Navbar() {
             ? chats.map((chatDoc) => {
                 return (soloUser.userId > user.uid
                   ? soloUser.userId + user.uid
-                  : user.uid + soloUser.userId) !== chatDoc.id
-                  ? setRenderChat(false)
-                  : "";
+                  : user.uid + soloUser.userId) === chatDoc.id
+                  ? setRenderChat(true)
+                  : setRenderChat(false);
               })
             : "";
         });

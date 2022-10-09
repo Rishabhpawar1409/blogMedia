@@ -300,54 +300,58 @@ function Profile() {
                         <p>No following!</p>
                       )}
                     </Popover>
-                    <div>
-                      {person.userId !== user.uid ? (
-                        person.followers.includes(user.uid) ? (
-                          <button
-                            className="Unfollow-btn"
-                            onClick={() => {
-                              handleUnfollow(person);
-                            }}
-                          >
-                            Unfollow
-                          </button>
+                    {newProfile === false ? (
+                      <div>
+                        {person.userId !== user.uid ? (
+                          person.followers.includes(user.uid) ? (
+                            <button
+                              className="Unfollow-btn"
+                              onClick={() => {
+                                handleUnfollow(person);
+                              }}
+                            >
+                              Unfollow
+                            </button>
+                          ) : (
+                            <button
+                              className="follow-btn"
+                              onClick={() => {
+                                handleFollow(person);
+                              }}
+                            >
+                              Follow
+                            </button>
+                          )
                         ) : (
-                          <button
-                            className="follow-btn"
-                            onClick={() => {
-                              handleFollow(person);
-                            }}
-                          >
-                            Follow
-                          </button>
-                        )
-                      ) : (
-                        ""
-                      )}
+                          ""
+                        )}
 
-                      {person.userId !== user.uid ? (
-                        <Link
-                          to={{ pathname: "/chat", hash: "#Message" }}
-                          state={{
-                            personChannelId:
-                              person.userId > user.uid
-                                ? person.userId + user.uid
-                                : user.uid + person.userId
-                          }}
-                        >
-                          <button
-                            onClick={() => {
-                              handleMessage(person);
+                        {person.userId !== user.uid ? (
+                          <Link
+                            to={{ pathname: "/chat", hash: "#Message" }}
+                            state={{
+                              personChannelId:
+                                person.userId > user.uid
+                                  ? person.userId + user.uid
+                                  : user.uid + person.userId
                             }}
-                            className="message-btn"
                           >
-                            Message
-                          </button>
-                        </Link>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                            <button
+                              onClick={() => {
+                                handleMessage(person);
+                              }}
+                              className="message-btn"
+                            >
+                              Message
+                            </button>
+                          </Link>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
 
                     <p className="profile-name">{person.userEmail}</p>
 
