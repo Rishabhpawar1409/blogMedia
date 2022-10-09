@@ -114,6 +114,7 @@
   margin-left: 2.25rem;
   padding-top: 3px;
 }
+
 .userAvatar-container {
   height: 30px;
   width: 30px;
@@ -188,7 +189,7 @@
   margin-top: 1.5rem;
 }
 .shareBtn {
-  font-size: 22px;
+  font-size: 20px;
   position: absolute;
   cursor: pointer;
   margin-top: 1.5rem;
@@ -210,6 +211,9 @@
   display: flex;
   margin-left: 0.75rem;
   font-size: 13px;
+}
+.like-counter {
+  margin-right: 0.25rem;
 }
 .heart {
   font-size: 20px;

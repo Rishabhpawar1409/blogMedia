@@ -27,7 +27,7 @@ import {
 const Home = () => {
   const [blogData, setBlogData] = useState();
   const [users, setUsers] = useState();
-
+  const [chats, setChats] = useState();
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -39,6 +39,12 @@ const Home = () => {
       setBlogData(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getBlogsData();
+
+    const getChatsData = async () => {
+      const get = await getDocs(collection(db, "chats"));
+      setChats(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getChatsData();
 
     const getUsersData = async () => {
       const get = await getDocs(collection(db, "users"));
@@ -513,13 +519,30 @@ const Home = () => {
                       ) : (
                         ""
                       )}
-                      <Link
-                        to={{ pathname: "/chat", hash: "#shareBlog" }}
-                        hash="#shareBlog"
-                        state={{ blog: { blog } }}
-                      >
-                        <TbSend className="shareBtn" />
-                      </Link>
+                      {users &&
+                        users.map((soloUser) => {
+                          return chats
+                            ? chats.map((chatDoc) => {
+                                return (soloUser.userId > user.uid
+                                  ? soloUser.userId + user.uid
+                                  : user.uid + soloUser.userId) ===
+                                  chatDoc.id ? (
+                                  <Link
+                                    to={{
+                                      pathname: "/chat",
+                                      hash: "#shareBlog"
+                                    }}
+                                    hash="#shareBlog"
+                                    state={{ blog: { blog } }}
+                                  >
+                                    <TbSend className="shareBtn" />
+                                  </Link>
+                                ) : (
+                                  ""
+                                );
+                              })
+                            : "";
+                        })}
 
                       <div className="likes-time-container">
                         <div className="likes">
@@ -540,7 +563,8 @@ const Home = () => {
                             />
                           )}
 
-                          <p>{blog.Likes.length}</p>
+                          <p className="like-counter">{blog.Likes.length}</p>
+
                           <p>
                             {blog.Likes > 0 ? blog.Likes : ""}
 
