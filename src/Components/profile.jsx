@@ -300,58 +300,62 @@ function Profile() {
                         <p>No following!</p>
                       )}
                     </Popover>
-                    {newProfile === false ? (
-                      <div>
-                        {person.userId !== user.uid ? (
-                          person.followers.includes(user.uid) ? (
-                            <button
-                              className="Unfollow-btn"
-                              onClick={() => {
-                                handleUnfollow(person);
-                              }}
-                            >
-                              Unfollow
-                            </button>
-                          ) : (
-                            <button
-                              className="follow-btn"
-                              onClick={() => {
-                                handleFollow(person);
-                              }}
-                            >
-                              Follow
-                            </button>
-                          )
-                        ) : (
-                          ""
-                        )}
 
-                        {person.userId !== user.uid ? (
-                          <Link
-                            to={{ pathname: "/chat", hash: "#Message" }}
-                            state={{
-                              personChannelId:
-                                person.userId > user.uid
-                                  ? person.userId + user.uid
-                                  : user.uid + person.userId
-                            }}
-                          >
-                            <button
-                              onClick={() => {
-                                handleMessage(person);
-                              }}
-                              className="message-btn"
-                            >
-                              Message
-                            </button>
-                          </Link>
+                    {profile &&
+                      profile.map((checker) => {
+                        return checker.userId.includes(user.uid) ? (
+                          <div>
+                            {person.userId !== user.uid ? (
+                              person.followers.includes(user.uid) ? (
+                                <button
+                                  className="Unfollow-btn"
+                                  onClick={() => {
+                                    handleUnfollow(person);
+                                  }}
+                                >
+                                  Unfollow
+                                </button>
+                              ) : (
+                                <button
+                                  className="follow-btn"
+                                  onClick={() => {
+                                    handleFollow(person);
+                                  }}
+                                >
+                                  Follow
+                                </button>
+                              )
+                            ) : (
+                              ""
+                            )}
+
+                            {person.userId !== user.uid ? (
+                              <Link
+                                to={{ pathname: "/chat", hash: "#Message" }}
+                                state={{
+                                  personChannelId:
+                                    person.userId > user.uid
+                                      ? person.userId + user.uid
+                                      : user.uid + person.userId
+                                }}
+                              >
+                                <button
+                                  onClick={() => {
+                                    handleMessage(person);
+                                  }}
+                                  className="message-btn"
+                                >
+                                  Message
+                                </button>
+                              </Link>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         ) : (
                           ""
-                        )}
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                        );
+                      })}
 
                     <p className="profile-name">{person.userEmail}</p>
 
