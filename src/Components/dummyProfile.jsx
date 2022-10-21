@@ -23,12 +23,7 @@ function Dummy() {
         <p> Joined on Aug 2022(default)</p>
       </div>
       <div className="profile-status">
-        <h4 className="status-text">Status:</h4>{" "}
-        <p>
-          Women
-          <GiCoffeeCup color="brown" />
-          (default)
-        </p>
+        <h4 className="status-text">Status:</h4> <p>I like omelette.</p>
       </div>
       <Link to="/editProfile">
         <button className="edit-btn">Edit</button>
