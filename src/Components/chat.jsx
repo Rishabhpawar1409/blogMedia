@@ -29,6 +29,7 @@ function Chat() {
     message: ""
   });
   const [input, setInput] = useState("");
+  const [taggedInput, setTaggedInput] = useState("");
   const [users, setUsers] = useState("");
   const [chats, setChats] = useState("");
   const [channelId, setChannelId] = useState("");
@@ -44,12 +45,24 @@ function Chat() {
   const handleChange = (e) => {
     setInput(e.target.value);
   };
+  const handleaggedChange = (e) => {
+    setTaggedInput(e.target.value);
+  };
   const handleSend = async () => {
+    closeTagg();
     const msg = {
       userChatId: user.uid,
       createdAt: Timestamp.now(),
       text: input,
+      taggedText: {
+        taggedMesg: tagg.message,
+        myText: taggedInput
+      },
       blog: sharedBlog,
+      taggedBlog: {
+        blog: sharedBlog,
+        myText: input
+      },
       isSeen: false
     };
 
@@ -67,6 +80,7 @@ function Chat() {
     });
 
     setInput("");
+    setTaggedInput("");
   };
 
   useEffect(() => {
@@ -97,6 +111,7 @@ function Chat() {
   }, [location]);
 
   const handleSelect = async (soloUser, chatDoc) => {
+    closeTagg();
     const getChatData = async () => {
       const get = await getDocs(collection(db, "chats"));
       setChats(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -219,7 +234,12 @@ function Chat() {
       message: msg
     });
   };
-
+  const closeTagg = () => {
+    setTagg({
+      boolean: false,
+      message: ""
+    });
+  };
   return (
     <div className="chat-window">
       <div className="chat-container">
@@ -426,178 +446,461 @@ function Chat() {
                   ? chats.map((chat) => {
                       return chat.id === channelId.id
                         ? chat.messages.map((message, index) => {
-                            return message.text !== "" ? (
-                              <div
-                                className="messageShaper"
-                                ref={ref}
-                                key={message.userChatId}
-                              >
-                                {message.userChatId === user.uid ? (
-                                  <>
-                                    <div
-                                      onDoubleClick={() => {
-                                        taggMe(message);
-                                      }}
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "sender"
-                                          : "receiver"
-                                      }
-                                    >
-                                      <p>{message.text}</p>
-
-                                      {message.isSeen === true ? (
-                                        <BiCheckDouble className="doubleTicks-seen" />
-                                      ) : (
-                                        <BiCheckDouble className="doubleTicks-notSeen" />
-                                      )}
-                                    </div>
-                                    <div
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "triangle-right"
-                                          : "triangle-left"
-                                      }
-                                    ></div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "triangle-right"
-                                          : "triangle-left"
-                                      }
-                                    ></div>
-                                    <div
-                                      onDoubleClick={() => {
-                                        taggMe(message);
-                                      }}
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "sender"
-                                          : "receiver"
-                                      }
-                                    >
-                                      <p>{message.text}</p>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            ) : (
-                              // for blog
-                              <div className="messageShaper-blog" ref={ref}>
-                                {message.userChatId === user.uid ? (
-                                  <>
-                                    <div
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "sender-blog"
-                                          : "receiver-blog"
-                                      }
-                                    >
-                                      <div className="shareBlog-container">
-                                        <div className="shareBlogImg-container">
-                                          <img
-                                            className="shareBlog-img"
-                                            src={message.blog.blog.themeImg}
-                                            alt="theme"
-                                          />
-                                        </div>
-                                        <div className="shareBlog-description">
-                                          <p className="description-title">
-                                            {message.blog.blog.title}
-                                          </p>
-                                          <p className="description-content">
-                                            {message.blog.blog.content}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <div className="Liknk-seen-container">
-                                        <div className="shareBlog-Link">
-                                          <Link
-                                            className="ReadMoreLink"
-                                            to="/singleBlog"
-                                            state={{ blog: message.blog.blog }}
-                                          >
-                                            <p
-                                              style={{ paddingTop: "2px" }}
-                                              className="ShareReadText"
-                                            >
-                                              Read more...
-                                            </p>
-                                          </Link>
-                                        </div>
+                            if (message.text !== "") {
+                              return (
+                                <div
+                                  className="messageShaper"
+                                  ref={ref}
+                                  key={message.userChatId}
+                                >
+                                  {message.userChatId === user.uid ? (
+                                    <>
+                                      <div
+                                        onDoubleClick={() => {
+                                          taggMe(message);
+                                        }}
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender"
+                                            : "receiver"
+                                        }
+                                      >
+                                        <p>{message.text}</p>
 
                                         {message.isSeen === true ? (
-                                          <BiCheckDouble className="blogDoubleTicks-seen" />
+                                          <BiCheckDouble className="doubleTicks-seen" />
                                         ) : (
-                                          <BiCheckDouble className="blogDoubleTicks-notSeen" />
+                                          <BiCheckDouble className="doubleTicks-notSeen" />
                                         )}
                                       </div>
-                                    </div>
-                                    <div
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "triangle-right"
-                                          : "triangle-left"
-                                      }
-                                    ></div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "triangle-right"
-                                          : "triangle-left"
-                                      }
-                                    ></div>
-                                    <div
-                                      className={
-                                        message.userChatId === user.uid
-                                          ? "sender-blog"
-                                          : "receiver-blog"
-                                      }
-                                    >
-                                      <div className="shareBlog-container">
-                                        <div className="shareBlogImg-container">
-                                          <img
-                                            className="shareBlog-img"
-                                            src={message.blog.blog.themeImg}
-                                            alt="theme"
-                                          />
-                                        </div>
-                                        <div className="shareBlog-description">
-                                          <p className="description-title">
-                                            {message.blog.blog.title}
-                                          </p>
-                                          <p className="description-content">
-                                            {message.blog.blog.content}
-                                          </p>
-                                        </div>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                      <div
+                                        onDoubleClick={() => {
+                                          taggMe(message);
+                                        }}
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender"
+                                            : "receiver"
+                                        }
+                                      >
+                                        <p>{message.text}</p>
                                       </div>
-                                      <div className="Liknk-seen-container">
-                                        <div className="shareBlog-Link">
-                                          <Link
-                                            className="ReadMoreLink"
-                                            to="/singleBlog"
-                                            state={{ blog: message.blog.blog }}
-                                          >
-                                            <p
-                                              style={{ paddingTop: "2px" }}
-                                              className="ShareReadText"
-                                            >
-                                              Read more...
+                                    </>
+                                  )}
+                                </div>
+                              );
+                            } else if (
+                              message.taggedText &&
+                              message.taggedText.taggedMesg !== ""
+                            ) {
+                              return (
+                                <div
+                                  className="messageShaper-tagged"
+                                  ref={ref}
+                                  key={message.userChatId}
+                                >
+                                  {message.userChatId === user.uid ? (
+                                    <>
+                                      <div
+                                        onDoubleClick={() => {
+                                          taggMe(message);
+                                        }}
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender"
+                                            : "receiver"
+                                        }
+                                      >
+                                        <span className="full-container">
+                                          <div className="tagg-textContainer">
+                                            <p className="whoTaggedIn">
+                                              {" "}
+                                              {user.uid ===
+                                              message.taggedText.taggedMesg
+                                                .userChatId
+                                                ? "You"
+                                                : users.map((soloUser) => {
+                                                    return soloUser.userId ===
+                                                      message.taggedText
+                                                        .taggedMesg.userChatId
+                                                      ? soloUser.userName
+                                                      : "";
+                                                  })}
                                             </p>
-                                          </Link>
+                                            <p className="taggedText">
+                                              {
+                                                message.taggedText.taggedMesg
+                                                  .text
+                                              }
+                                            </p>
+                                          </div>
+                                          <p>{message.taggedText.myText}</p>
+                                        </span>
+
+                                        {message.isSeen === true ? (
+                                          <BiCheckDouble className="doubleTicks-seen" />
+                                        ) : (
+                                          <BiCheckDouble className="doubleTicks-notSeen" />
+                                        )}
+                                      </div>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                      <div
+                                        onDoubleClick={() => {
+                                          taggMe(message);
+                                        }}
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender"
+                                            : "receiver"
+                                        }
+                                      >
+                                        <div>
+                                          <p className="whoTaggedIn">
+                                            {" "}
+                                            {user.uid ===
+                                            tagg.message.userChatId
+                                              ? "You"
+                                              : users.map((soloUser) => {
+                                                  return soloUser.userId ===
+                                                    tagg.message.userChatId
+                                                    ? soloUser.userName
+                                                    : "";
+                                                })}
+                                          </p>
+                                          <p className="taggedText">
+                                            {message.taggedText.taggedMesg.text}
+                                          </p>
+                                        </div>
+                                        <p>{message.taggedText.myText}</p>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <div className="messageShaper-blog" ref={ref}>
+                                  {message.userChatId === user.uid ? (
+                                    <>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender-blog"
+                                            : "receiver-blog"
+                                        }
+                                      >
+                                        <div className="shareBlog-container">
+                                          <div className="shareBlogImg-container">
+                                            <img
+                                              className="shareBlog-img"
+                                              src={message.blog.blog.themeImg}
+                                              alt="theme"
+                                            />
+                                          </div>
+                                          <div className="shareBlog-description">
+                                            <p className="description-title">
+                                              {message.blog.blog.title}
+                                            </p>
+                                            <p className="description-content">
+                                              {message.blog.blog.content}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        <div className="Liknk-seen-container">
+                                          <div className="shareBlog-Link">
+                                            <Link
+                                              className="ReadMoreLink"
+                                              to="/singleBlog"
+                                              state={{
+                                                blog: message.blog.blog
+                                              }}
+                                            >
+                                              <p
+                                                style={{ paddingTop: "2px" }}
+                                                className="ShareReadText"
+                                              >
+                                                Read more...
+                                              </p>
+                                            </Link>
+                                          </div>
+
+                                          {message.isSeen === true ? (
+                                            <BiCheckDouble className="blogDoubleTicks-seen" />
+                                          ) : (
+                                            <BiCheckDouble className="blogDoubleTicks-notSeen" />
+                                          )}
                                         </div>
                                       </div>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            );
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender-blog"
+                                            : "receiver-blog"
+                                        }
+                                      >
+                                        <div className="shareBlog-container">
+                                          <div className="shareBlogImg-container">
+                                            <img
+                                              className="shareBlog-img"
+                                              src={message.blog.blog.themeImg}
+                                              alt="theme"
+                                            />
+                                          </div>
+                                          <div className="shareBlog-description">
+                                            <p className="description-title">
+                                              {message.blog.blog.title}
+                                            </p>
+                                            <p className="description-content">
+                                              {message.blog.blog.content}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        <div className="Liknk-seen-container">
+                                          <div className="shareBlog-Link">
+                                            <Link
+                                              className="ReadMoreLink"
+                                              to="/singleBlog"
+                                              state={{
+                                                blog: message.blog.blog
+                                              }}
+                                            >
+                                              <p
+                                                style={{ paddingTop: "2px" }}
+                                                className="ShareReadText"
+                                              >
+                                                Read more...
+                                              </p>
+                                            </Link>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              );
+                            }
+                            //   return message.text !== "" ? (
+                            //     <div
+                            //       className="messageShaper"
+                            //       ref={ref}
+                            //       key={message.userChatId}
+                            //     >
+                            //       {message.userChatId === user.uid ? (
+                            //         <>
+                            //           <div
+                            //             onDoubleClick={() => {
+                            //               taggMe(message);
+                            //             }}
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "sender"
+                            //                 : "receiver"
+                            //             }
+                            //           >
+                            //             <p>{message.text}</p>
+
+                            //             {message.isSeen === true ? (
+                            //               <BiCheckDouble className="doubleTicks-seen" />
+                            //             ) : (
+                            //               <BiCheckDouble className="doubleTicks-notSeen" />
+                            //             )}
+                            //           </div>
+                            //           <div
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "triangle-right"
+                            //                 : "triangle-left"
+                            //             }
+                            //           ></div>
+                            //         </>
+                            //       ) : (
+                            //         <>
+                            //           <div
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "triangle-right"
+                            //                 : "triangle-left"
+                            //             }
+                            //           ></div>
+                            //           <div
+                            //             onDoubleClick={() => {
+                            //               taggMe(message);
+                            //             }}
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "sender"
+                            //                 : "receiver"
+                            //             }
+                            //           >
+                            //             <p>{message.text}</p>
+                            //           </div>
+                            //         </>
+                            //       )}
+                            //     </div>
+                            //   ) : (
+                            //     // for blog
+                            //     <div className="messageShaper-blog" ref={ref}>
+                            //       {message.userChatId === user.uid ? (
+                            //         <>
+                            //           <div
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "sender-blog"
+                            //                 : "receiver-blog"
+                            //             }
+                            //           >
+                            //             <div className="shareBlog-container">
+                            //               <div className="shareBlogImg-container">
+                            //                 <img
+                            //                   className="shareBlog-img"
+                            //                   src={message.blog.blog.themeImg}
+                            //                   alt="theme"
+                            //                 />
+                            //               </div>
+                            //               <div className="shareBlog-description">
+                            //                 <p className="description-title">
+                            //                   {message.blog.blog.title}
+                            //                 </p>
+                            //                 <p className="description-content">
+                            //                   {message.blog.blog.content}
+                            //                 </p>
+                            //               </div>
+                            //             </div>
+                            //             <div className="Liknk-seen-container">
+                            //               <div className="shareBlog-Link">
+                            //                 <Link
+                            //                   className="ReadMoreLink"
+                            //                   to="/singleBlog"
+                            //                   state={{ blog: message.blog.blog }}
+                            //                 >
+                            //                   <p
+                            //                     style={{ paddingTop: "2px" }}
+                            //                     className="ShareReadText"
+                            //                   >
+                            //                     Read more...
+                            //                   </p>
+                            //                 </Link>
+                            //               </div>
+
+                            //               {message.isSeen === true ? (
+                            //                 <BiCheckDouble className="blogDoubleTicks-seen" />
+                            //               ) : (
+                            //                 <BiCheckDouble className="blogDoubleTicks-notSeen" />
+                            //               )}
+                            //             </div>
+                            //           </div>
+                            //           <div
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "triangle-right"
+                            //                 : "triangle-left"
+                            //             }
+                            //           ></div>
+                            //         </>
+                            //       ) : (
+                            //         <>
+                            //           <div
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "triangle-right"
+                            //                 : "triangle-left"
+                            //             }
+                            //           ></div>
+                            //           <div
+                            //             className={
+                            //               message.userChatId === user.uid
+                            //                 ? "sender-blog"
+                            //                 : "receiver-blog"
+                            //             }
+                            //           >
+                            //             <div className="shareBlog-container">
+                            //               <div className="shareBlogImg-container">
+                            //                 <img
+                            //                   className="shareBlog-img"
+                            //                   src={message.blog.blog.themeImg}
+                            //                   alt="theme"
+                            //                 />
+                            //               </div>
+                            //               <div className="shareBlog-description">
+                            //                 <p className="description-title">
+                            //                   {message.blog.blog.title}
+                            //                 </p>
+                            //                 <p className="description-content">
+                            //                   {message.blog.blog.content}
+                            //                 </p>
+                            //               </div>
+                            //             </div>
+                            //             <div className="Liknk-seen-container">
+                            //               <div className="shareBlog-Link">
+                            //                 <Link
+                            //                   className="ReadMoreLink"
+                            //                   to="/singleBlog"
+                            //                   state={{ blog: message.blog.blog }}
+                            //                 >
+                            //                   <p
+                            //                     style={{ paddingTop: "2px" }}
+                            //                     className="ShareReadText"
+                            //                   >
+                            //                     Read more...
+                            //                   </p>
+                            //                 </Link>
+                            //               </div>
+                            //             </div>
+                            //           </div>
+                            //         </>
+                            //       )}
+                            //     </div>
+                            //   );
                           })
                         : "";
                     })
@@ -638,25 +941,36 @@ function Chat() {
             ) : (
               <div className="inputTagg-container">
                 <div className="taggedMesg-conatiner">
-                  <p className="authorOfMessage">
-                    {users.map((soloUser) => {
-                      return soloUser.userId === tagg.message.userChatId
-                        ? soloUser.userName
-                        : "";
-                    })}
-                  </p>
+                  <div className="name-close">
+                    <p className="authorOfMessage">
+                      {user.uid === tagg.message.userChatId
+                        ? "You"
+                        : users.map((soloUser) => {
+                            return soloUser.userId === tagg.message.userChatId
+                              ? soloUser.userName
+                              : "";
+                          })}
+                    </p>
+                    <MdClose
+                      className="close-icon"
+                      onClick={() => {
+                        closeTagg();
+                      }}
+                    />
+                  </div>
+
                   <p>{tagg.message.text}</p>
                 </div>
                 <input
                   className="chat-input"
-                  value={input}
+                  value={taggedInput}
                   type="text"
                   placeholder="Message..."
                   onChange={(e) => {
-                    handleChange(e);
+                    handleaggedChange(e);
                   }}
                 />
-                {input.length ? (
+                {taggedInput.length ? (
                   <div className="sendBtn-container">
                     <IoIosPaperPlane
                       className="send-icon"
