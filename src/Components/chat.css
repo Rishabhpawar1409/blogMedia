@@ -40,7 +40,7 @@
   align-items: center;
 }
 .chat-input {
-  height: 100%;
+  height: 50px;
   width: 100%;
   border: none;
   font-size: 15px;
@@ -354,6 +354,25 @@
   background-color: white;
   display: flex;
   align-items: center;
+}
+.inputTagg-container {
+  border-radius: 0px 0px 10px 0px;
+  height: 90px;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  /* align-items: center; */
+}
+.taggedMesg-conatiner {
+  background-color: whitesmoke;
+  padding-left: 1rem;
+  padding-top: 0.25rem;
+}
+.authorOfMessage {
+  color: blueviolet;
+  font-size: 12px;
 }
 .userImage-container {
   margin: 0.5rem;

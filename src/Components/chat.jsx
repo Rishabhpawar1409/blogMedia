@@ -24,6 +24,10 @@ import {
 function Chat() {
   const { user } = useUserAuth();
   const location = useLocation();
+  const [tagg, setTagg] = useState({
+    boolean: false,
+    message: ""
+  });
   const [input, setInput] = useState("");
   const [users, setUsers] = useState("");
   const [chats, setChats] = useState("");
@@ -206,6 +210,13 @@ function Chat() {
       return combineId === chatDoc.id
         ? (setSearchResults([]), handleSelect(user, chatDoc))
         : "";
+    });
+  };
+
+  const taggMe = (msg) => {
+    setTagg({
+      boolean: true,
+      message: msg
     });
   };
 
@@ -424,6 +435,9 @@ function Chat() {
                                 {message.userChatId === user.uid ? (
                                   <>
                                     <div
+                                      onDoubleClick={() => {
+                                        taggMe(message);
+                                      }}
                                       className={
                                         message.userChatId === user.uid
                                           ? "sender"
@@ -456,6 +470,9 @@ function Chat() {
                                       }
                                     ></div>
                                     <div
+                                      onDoubleClick={() => {
+                                        taggMe(message);
+                                      }}
                                       className={
                                         message.userChatId === user.uid
                                           ? "sender"
@@ -594,8 +611,42 @@ function Chat() {
             )}
             {selected === false ? (
               ""
-            ) : (
+            ) : tagg.boolean === false ? (
               <div className="input-container">
+                <input
+                  className="chat-input"
+                  value={input}
+                  type="text"
+                  placeholder="Message..."
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                />
+                {input.length ? (
+                  <div className="sendBtn-container">
+                    <IoIosPaperPlane
+                      className="send-icon"
+                      onClick={() => {
+                        handleSend();
+                      }}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            ) : (
+              <div className="inputTagg-container">
+                <div className="taggedMesg-conatiner">
+                  <p className="authorOfMessage">
+                    {users.map((soloUser) => {
+                      return soloUser.userId === tagg.message.userChatId
+                        ? soloUser.userName
+                        : "";
+                    })}
+                  </p>
+                  <p>{tagg.message.text}</p>
+                </div>
                 <input
                   className="chat-input"
                   value={input}
