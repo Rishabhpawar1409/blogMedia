@@ -587,24 +587,29 @@ function Chat() {
                                             : "receiver"
                                         }
                                       >
-                                        <div>
-                                          <p className="whoTaggedIn">
-                                            {" "}
-                                            {user.uid ===
-                                            tagg.message.userChatId
-                                              ? "You"
-                                              : users.map((soloUser) => {
-                                                  return soloUser.userId ===
-                                                    tagg.message.userChatId
-                                                    ? soloUser.userName
-                                                    : "";
-                                                })}
-                                          </p>
-                                          <p className="taggedText">
-                                            {message.taggedText.taggedMesg.text}
-                                          </p>
-                                        </div>
-                                        <p>{message.taggedText.myText}</p>
+                                        <span className="full-Container">
+                                          <div className="tagg-textConatiner">
+                                            <p className="whoTaggedIn">
+                                              {" "}
+                                              {user.uid ===
+                                              tagg.message.userChatId
+                                                ? "You"
+                                                : users.map((soloUser) => {
+                                                    return soloUser.userId ===
+                                                      tagg.message.userChatId
+                                                      ? soloUser.userName
+                                                      : "";
+                                                  })}
+                                            </p>
+                                            <p className="taggedText">
+                                              {
+                                                message.taggedText.taggedMesg
+                                                  .text
+                                              }
+                                            </p>
+                                          </div>
+                                          <p>{message.taggedText.myText}</p>
+                                        </span>
                                       </div>
                                     </>
                                   )}
