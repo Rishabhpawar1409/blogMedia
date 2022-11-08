@@ -215,6 +215,14 @@
   border-left: 4px solid pink;
   align-items: flex-start;
 }
+.tagg-textContainer-receiver {
+  display: flex;
+  flex-direction: column;
+  background-color: #b9bbde;
+  border-radius: 5px;
+  border-left: 4px solid blueviolet;
+  align-items: flex-start;
+}
 .taggedText {
   font-size: 12px;
   margin-left: 0.25rem;
