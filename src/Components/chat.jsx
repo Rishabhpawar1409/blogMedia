@@ -257,7 +257,9 @@ function Chat() {
   const endMe = (data) => {
     setPosition({ x: 0 });
   };
-
+  const handleTaggClick = (e) => {
+    console.log(e.target);
+  };
   return (
     <div className="chat-window">
       <div className="chat-container">
@@ -475,8 +477,6 @@ function Chat() {
                                   onStop={(e, data) => {
                                     endMe(data);
                                   }}
-
-                                  // defaultPosition={position}
                                 >
                                   <div
                                     className="messageShaper"
@@ -560,7 +560,12 @@ function Chat() {
                                         }
                                       >
                                         <span className="full-container">
-                                          <div className="tagg-textContainer">
+                                          <div
+                                            className="tagg-textContainer"
+                                            onClick={(e) => {
+                                              handleTaggClick(e);
+                                            }}
+                                          >
                                             <p className="whoTaggedIn">
                                               {" "}
                                               {user.uid ===
@@ -999,27 +1004,29 @@ function Chat() {
 
                   <p>{tagg.message.text}</p>
                 </div>
-                <input
-                  className="chat-input"
-                  value={taggedInput}
-                  type="text"
-                  placeholder="Message..."
-                  onChange={(e) => {
-                    handleaggedChange(e);
-                  }}
-                />
-                {taggedInput.length ? (
-                  <div className="sendBtn-container">
-                    <IoIosPaperPlane
-                      className="send-icon"
-                      onClick={() => {
-                        handleSend();
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
+                <span className="flexed-inputAndBtn">
+                  <input
+                    className="chat-input"
+                    value={taggedInput}
+                    type="text"
+                    placeholder="Message..."
+                    onChange={(e) => {
+                      handleaggedChange(e);
+                    }}
+                  />
+                  {taggedInput.length ? (
+                    <div className="sendBtn-container">
+                      <IoIosPaperPlane
+                        className="send-icon"
+                        onClick={() => {
+                          handleSend();
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </span>
               </div>
             )}
           </div>

@@ -9,6 +9,7 @@
   height: 600px;
   width: 850px;
   display: flex;
+  overflow: hidden;
 }
 .users-container {
   flex: 1;
@@ -179,6 +180,7 @@
   background-color: white;
   height: 492px;
   width: 100%;
+  overflow-x: hidden;
   overflow-y: scroll;
   text-align: center;
 }
@@ -208,6 +210,7 @@
   display: flex;
 }
 .tagg-textContainer {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   background-color: #b9bbde;
@@ -216,6 +219,7 @@
   align-items: flex-start;
 }
 .tagg-textContainer-receiver {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   background-color: #b9bbde;
@@ -315,14 +319,15 @@
   margin-top: 0.25rem;
   color: white;
   font-size: 15px;
+  text-align: left;
 }
 .name-close {
   display: flex;
   justify-content: space-between;
 }
 .close-icon {
-  margin-right: 2rem;
-  font-size: 12px;
+  margin-right: 0.5rem;
+  font-size: 15px;
   color: blueviolet;
   cursor: pointer;
 }
@@ -368,7 +373,6 @@
   border-radius: 5px 0px 0px 0px;
 }
 .receiver-blog {
-  /* height: 50px; */
   padding: 4px;
   border-radius: 0px 8px 8px 8px;
   max-width: 60%;
@@ -386,6 +390,7 @@
   margin-top: 0.25rem;
   font-size: 15px;
   width: fit-content;
+  text-align: left;
 }
 
 .input-container {
@@ -396,17 +401,22 @@
   display: flex;
   align-items: center;
 }
+.flexed-inputAndBtn {
+  display: flex;
+}
 .inputTagg-container {
-  border-radius: 0px 0px 10px 0px;
+  border-radius: 10px 0px 10px 0px;
   height: 90px;
   width: 100%;
   background-color: white;
   display: flex;
   flex-direction: column;
-
-  /* align-items: center; */
+  margin-bottom: 4.35rem;
 }
 .taggedMesg-conatiner {
+  border-left: 5px solid blueviolet;
+  margin: 0.5rem;
+  border-radius: 7px;
   background-color: whitesmoke;
   padding-left: 1rem;
   padding-top: 0.25rem;
