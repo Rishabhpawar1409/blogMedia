@@ -43,7 +43,7 @@ function Chat() {
   const [participant, setParticipant] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [position, setPosition] = useState({ x: 0 });
-  const [startDrag, setStartDrag] = useState({ x: 0 });
+  const [taggedMsg, setTaggedMsg] = useState("");
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -258,7 +258,7 @@ function Chat() {
     setPosition({ x: 0 });
   };
   const handleTaggClick = (e) => {
-    console.log(e.target);
+    setTaggedMsg(ref.current.innerHTML);
   };
   return (
     <div className="chat-window">
@@ -480,7 +480,6 @@ function Chat() {
                                 >
                                   <div
                                     className="messageShaper"
-                                    ref={ref}
                                     key={message.userChatId}
                                   >
                                     {message.userChatId === user.uid ? (
@@ -580,7 +579,7 @@ function Chat() {
                                                       : "";
                                                   })}
                                             </p>
-                                            <p className="taggedText">
+                                            <p className="taggedText" ref={ref}>
                                               {
                                                 message.taggedText.taggedMesg
                                                   .text
