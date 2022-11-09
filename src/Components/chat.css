@@ -203,6 +203,9 @@
 .messageShaper {
   display: flex;
 }
+.changeBagColor {
+  background-color: cyan;
+}
 .messageShaper-tagged {
   display: flex;
 }

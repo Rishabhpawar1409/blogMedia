@@ -259,6 +259,9 @@ function Chat() {
   };
   const handleTaggClick = (e) => {
     setTaggedMsg(e.target.innerHTML);
+    setTimeout(() => {
+      setTaggedMsg("");
+    }, 2000);
   };
   return (
     <div className="chat-window">
@@ -479,60 +482,68 @@ function Chat() {
                                   }}
                                 >
                                   <div
-                                    className="messageShaper"
-                                    key={message.userChatId}
+                                    className={
+                                      taggedMsg === message.text
+                                        ? "changeBagColor"
+                                        : ""
+                                    }
                                   >
-                                    {message.userChatId === user.uid ? (
-                                      <>
-                                        <div
-                                          onDoubleClick={() => {
-                                            taggMe(message);
-                                          }}
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "sender"
-                                              : "receiver"
-                                          }
-                                        >
-                                          <p>{message.text}</p>
+                                    <div
+                                      className="messageShaper"
+                                      key={message.userChatId}
+                                    >
+                                      {message.userChatId === user.uid ? (
+                                        <>
+                                          <div
+                                            onDoubleClick={() => {
+                                              taggMe(message);
+                                            }}
+                                            className={
+                                              message.userChatId === user.uid
+                                                ? "sender"
+                                                : "receiver"
+                                            }
+                                          >
+                                            <p>{message.text}</p>
 
-                                          {message.isSeen === true ? (
-                                            <BiCheckDouble className="doubleTicks-seen" />
-                                          ) : (
-                                            <BiCheckDouble className="doubleTicks-notSeen" />
-                                          )}
-                                        </div>
-                                        <div
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "triangle-right"
-                                              : "triangle-left"
-                                          }
-                                        ></div>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <div
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "triangle-right"
-                                              : "triangle-left"
-                                          }
-                                        ></div>
-                                        <div
-                                          onDoubleClick={() => {
-                                            taggMe(message);
-                                          }}
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "sender"
-                                              : "receiver"
-                                          }
-                                        >
-                                          <p>{message.text}</p>
-                                        </div>
-                                      </>
-                                    )}
+                                            {message.isSeen === true ? (
+                                              <BiCheckDouble className="doubleTicks-seen" />
+                                            ) : (
+                                              <BiCheckDouble className="doubleTicks-notSeen" />
+                                            )}
+                                          </div>
+                                          <div
+                                            className={
+                                              message.userChatId === user.uid
+                                                ? "triangle-right"
+                                                : "triangle-left"
+                                            }
+                                          ></div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <div
+                                            className={
+                                              message.userChatId === user.uid
+                                                ? "triangle-right"
+                                                : "triangle-left"
+                                            }
+                                          ></div>
+                                          <div
+                                            onDoubleClick={() => {
+                                              taggMe(message);
+                                            }}
+                                            className={
+                                              message.userChatId === user.uid
+                                                ? "sender"
+                                                : "receiver"
+                                            }
+                                          >
+                                            <p>{message.text}</p>
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
                                   </div>
                                 </Draggable>
                               );
@@ -542,124 +553,115 @@ function Chat() {
                             ) {
                               return (
                                 <div
-                                  className={
-                                    taggedMsg ===
-                                    message.taggedText.taggedMesg.text
-                                      ? "changeColorBag"
-                                      : ""
-                                  }
+                                  className="messageShaper-tagged"
+                                  ref={ref}
+                                  key={message.userChatId}
                                 >
-                                  <div
-                                    className="messageShaper-tagged"
-                                    ref={ref}
-                                    key={message.userChatId}
-                                  >
-                                    {message.userChatId === user.uid ? (
-                                      <>
-                                        <div
-                                          onDoubleClick={() => {
-                                            taggMe(message);
-                                          }}
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "sender"
-                                              : "receiver"
-                                          }
-                                        >
-                                          <span className="full-container">
-                                            <div className="tagg-textContainer">
-                                              <p className="whoTaggedIn">
-                                                {" "}
-                                                {user.uid ===
+                                  {message.userChatId === user.uid ? (
+                                    <>
+                                      <div
+                                        onDoubleClick={() => {
+                                          taggMe(message);
+                                        }}
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender"
+                                            : "receiver"
+                                        }
+                                      >
+                                        <span className="full-container">
+                                          <div className="tagg-textContainer">
+                                            <p className="whoTaggedIn">
+                                              {" "}
+                                              {user.uid ===
+                                              message.taggedText.taggedMesg
+                                                .userChatId
+                                                ? "You"
+                                                : users.map((soloUser) => {
+                                                    return soloUser.userId ===
+                                                      message.taggedText
+                                                        .taggedMesg.userChatId
+                                                      ? soloUser.userName
+                                                      : "";
+                                                  })}
+                                            </p>
+                                            <p
+                                              className="taggedText"
+                                              ref={ref}
+                                              onClick={(e) => {
+                                                handleTaggClick(e);
+                                              }}
+                                            >
+                                              {
                                                 message.taggedText.taggedMesg
-                                                  .userChatId
-                                                  ? "You"
-                                                  : users.map((soloUser) => {
-                                                      return soloUser.userId ===
-                                                        message.taggedText
-                                                          .taggedMesg.userChatId
-                                                        ? soloUser.userName
-                                                        : "";
-                                                    })}
-                                              </p>
-                                              <p
-                                                className="taggedText"
-                                                ref={ref}
-                                                onClick={(e) => {
-                                                  handleTaggClick(e);
-                                                }}
-                                              >
-                                                {
-                                                  message.taggedText.taggedMesg
-                                                    .text
-                                                }
-                                              </p>
-                                            </div>
-                                            <p>{message.taggedText.myText}</p>
-                                          </span>
+                                                  .text
+                                              }
+                                            </p>
+                                          </div>
+                                          <p>{message.taggedText.myText}</p>
+                                        </span>
 
-                                          {message.isSeen === true ? (
-                                            <BiCheckDouble className="doubleTicks-seen" />
-                                          ) : (
-                                            <BiCheckDouble className="doubleTicks-notSeen" />
-                                          )}
-                                        </div>
-                                        <div
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "triangle-right"
-                                              : "triangle-left"
-                                          }
-                                        ></div>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <div
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "triangle-right"
-                                              : "triangle-left"
-                                          }
-                                        ></div>
-                                        <div
-                                          onDoubleClick={() => {
-                                            taggMe(message);
-                                          }}
-                                          className={
-                                            message.userChatId === user.uid
-                                              ? "sender"
-                                              : "receiver"
-                                          }
-                                        >
-                                          <span className="full-Container">
-                                            <div className="tagg-textContainer-receiver">
-                                              <p className="whoTaggedIn">
-                                                {" "}
-                                                {user.uid ===
+                                        {message.isSeen === true ? (
+                                          <BiCheckDouble className="doubleTicks-seen" />
+                                        ) : (
+                                          <BiCheckDouble className="doubleTicks-notSeen" />
+                                        )}
+                                      </div>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "triangle-right"
+                                            : "triangle-left"
+                                        }
+                                      ></div>
+                                      <div
+                                        onDoubleClick={() => {
+                                          taggMe(message);
+                                        }}
+                                        className={
+                                          message.userChatId === user.uid
+                                            ? "sender"
+                                            : "receiver"
+                                        }
+                                      >
+                                        <span className="full-Container">
+                                          <div className="tagg-textContainer-receiver">
+                                            <p className="whoTaggedIn">
+                                              {" "}
+                                              {user.uid ===
+                                              message.taggedText.taggedMesg
+                                                .userChatId
+                                                ? "You"
+                                                : users.map((soloUser) => {
+                                                    return soloUser.userId ===
+                                                      message.taggedText
+                                                        .taggedMesg.userChatId
+                                                      ? soloUser.userName
+                                                      : "";
+                                                  })}
+                                            </p>
+                                            <p className="taggedText">
+                                              {
                                                 message.taggedText.taggedMesg
-                                                  .userChatId
-                                                  ? "You"
-                                                  : users.map((soloUser) => {
-                                                      return soloUser.userId ===
-                                                        message.taggedText
-                                                          .taggedMesg.userChatId
-                                                        ? soloUser.userName
-                                                        : "";
-                                                    })}
-                                              </p>
-                                              <p className="taggedText">
-                                                {
-                                                  message.taggedText.taggedMesg
-                                                    .text
-                                                }
-                                              </p>
-                                            </div>
-                                            <p>{message.taggedText.myText}</p>
-                                          </span>
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
+                                                  .text
+                                              }
+                                            </p>
+                                          </div>
+                                          <p>{message.taggedText.myText}</p>
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
                                 </div>
                               );
                             } else {
