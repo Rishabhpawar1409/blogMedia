@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, createRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useUserAuth } from "../Context/userAuthContext";
 import { db } from "../firebase";
@@ -51,7 +51,31 @@ function Chat() {
   const handleaggedChange = (e) => {
     setTaggedInput(e.target.value);
   };
+
+  const refs =
+    chats &&
+    chats.map((chat) => {
+      return chat.id === channelId.id
+        ? chat.reduce((acc, value) => {
+            acc[value.createdAt.seconds] = createRef();
+            return acc;
+          }, {})
+        : "";
+    });
   const handleSend = async () => {
+    chats.map((chat) => {
+      return chat.id === channelId.id
+        ? chat.messages.map((msg) => {
+            return console.log(msg.createdAt.seconds);
+          })
+        : "";
+    });
+    // chats.map((chat) => {
+    //   return chat.id === channelId.id
+    //     ? chat.messages.map((message, index) => {
+    //         if (message.text !== "") {
+
+    // kjbhgvhgvhhj
     closeTagg();
     const msg = {
       userChatId: user.uid,
@@ -555,6 +579,7 @@ function Chat() {
                               return (
                                 <div
                                   className="messageShaper-tagged"
+                                  // this ref is important
                                   ref={ref}
                                   key={message.userChatId}
                                 >
@@ -588,6 +613,7 @@ function Chat() {
                                             </p>
                                             <p
                                               className="taggedText"
+                                              // this ref is also imp.
                                               ref={ref}
                                               onClick={(e) => {
                                                 handleTaggClick(e);
