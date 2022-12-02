@@ -472,7 +472,8 @@ function Chat() {
                             if (message.text !== "") {
                               return (
                                 <Draggable
-                                  bounds={{ left: 0, right: 76 }}
+                                  bounds={{ left: 0, right: 100 }}
+                                  position={{ x: 0, y: 0 }}
                                   onDrag={(e, data) => {
                                     trackPos(data, message, e);
                                   }}
