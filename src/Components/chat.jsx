@@ -44,6 +44,8 @@ function Chat() {
   const [searchResults, setSearchResults] = useState([]);
   const [position, setPosition] = useState({ x: 0 });
   const [taggedMsg, setTaggedMsg] = useState("");
+  const [messages, setMessages] = useState("");
+  const [refs, setRefs] = useState("");
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -52,30 +54,54 @@ function Chat() {
     setTaggedInput(e.target.value);
   };
 
-  const refs =
-    chats &&
-    chats.map((chat) => {
-      return chat.id === channelId.id
-        ? chat.messages.reduce((acc, value) => {
-            acc[value.createdAt.seconds] = createRef();
-            return acc;
-          }, {})
-        : "";
+  // chats &&
+  // chats.map((chat) => {
+  //   return chat.id === channelId.id
+  //     ? chat.messages.reduce((acc, value) => {
+  //         acc[value.createdAt.seconds] = createRef();
+  //         return acc;
+  //       }, {})
+  //     : "";
+  // });
+
+  const handleTaggClick = (e, message) => {
+    // console.log("message", message);
+
+    setTaggedMsg(e.target.innerHTML);
+    setTimeout(() => {
+      setTaggedMsg("");
+    }, 2000);
+
+    console.log(message.createdAt.seconds);
+    console.log(refs);
+    console.log(refs[message.createdAt.seconds]);
+
+    refs[message.createdAt.seconds].current.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
     });
+
+    // refs[message.createdAt.seconds].current.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "center"
+    // });
+    // refs[
+    //   message.taggedText.taggedMesg.createdAt.seconds
+    // ].current.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "center"
+    // });
+  };
+
   const handleSend = async () => {
-    chats.map((chat) => {
-      return chat.id === channelId.id
-        ? chat.messages.map((msg) => {
-            return console.log(msg.createdAt.seconds);
-          })
-        : "";
-    });
     // chats.map((chat) => {
     //   return chat.id === channelId.id
-    //     ? chat.messages.map((message, index) => {
-    //         if (message.text !== "") {
+    //     ? chat.messages.map((msg) => {
+    //         return console.log(msg.createdAt.seconds);
+    //       })
+    //     : "";
+    // });
 
-    // kjbhgvhgvhhj
     closeTagg();
     const msg = {
       userChatId: user.uid,
@@ -138,6 +164,21 @@ function Chat() {
   }, [location]);
 
   const handleSelect = async (soloUser, chatDoc) => {
+    // setting messages state on selecting the chatId.
+    chats &&
+      chats.map((chat) => {
+        return chat.id === channelId.id ? setMessages(chat.messages) : "";
+      });
+
+    const refs =
+      messages &&
+      messages.reduce((acc, value) => {
+        acc[value.createdAt.seconds] = createRef();
+        return acc;
+      }, {});
+
+    setRefs(refs);
+
     closeTagg();
     const getChatData = async () => {
       const get = await getDocs(collection(db, "chats"));
@@ -281,12 +322,7 @@ function Chat() {
   const endMe = (data) => {
     setPosition({ x: 0 });
   };
-  const handleTaggClick = (e) => {
-    setTaggedMsg(e.target.innerHTML);
-    setTimeout(() => {
-      setTaggedMsg("");
-    }, 2000);
-  };
+
   return (
     <div className="chat-window">
       <div className="chat-container">
@@ -529,7 +565,16 @@ function Chat() {
                                                 : "receiver"
                                             }
                                           >
-                                            <p>{message.text}</p>
+                                            <p
+                                              ref={
+                                                refs[message.createdAt.seconds]
+                                              }
+                                              onClick={(e) => {
+                                                handleTaggClick(e, message);
+                                              }}
+                                            >
+                                              {message.text}
+                                            </p>
 
                                             {message.isSeen === true ? (
                                               <BiCheckDouble className="doubleTicks-seen" />
@@ -564,7 +609,16 @@ function Chat() {
                                                 : "receiver"
                                             }
                                           >
-                                            <p>{message.text}</p>
+                                            <p
+                                              onClick={(e) => {
+                                                handleTaggClick(e, message);
+                                              }}
+                                              ref={
+                                                refs[message.createdAt.seconds]
+                                              }
+                                            >
+                                              {message.text}
+                                            </p>
                                           </div>
                                         </>
                                       )}
@@ -616,7 +670,7 @@ function Chat() {
                                               // this ref is also imp.
                                               ref={ref}
                                               onClick={(e) => {
-                                                handleTaggClick(e);
+                                                handleTaggClick(e, message);
                                               }}
                                             >
                                               {
