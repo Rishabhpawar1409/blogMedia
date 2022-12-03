@@ -56,7 +56,7 @@ function Chat() {
     chats &&
     chats.map((chat) => {
       return chat.id === channelId.id
-        ? chat.reduce((acc, value) => {
+        ? chat.messages.reduce((acc, value) => {
             acc[value.createdAt.seconds] = createRef();
             return acc;
           }, {})
