@@ -72,36 +72,15 @@ function Chat() {
       setTaggedMsg("");
     }, 2000);
 
-    console.log(message.createdAt.seconds);
-    console.log(refs);
-    console.log(refs[message.createdAt.seconds]);
-
-    refs[message.createdAt.seconds].current.scrollIntoView({
+    refs[
+      message.taggedText.taggedMesg.createdAt.seconds
+    ].current.scrollIntoView({
       behavior: "smooth",
       block: "center"
     });
-
-    // refs[message.createdAt.seconds].current.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "center"
-    // });
-    // refs[
-    //   message.taggedText.taggedMesg.createdAt.seconds
-    // ].current.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "center"
-    // });
   };
 
   const handleSend = async () => {
-    // chats.map((chat) => {
-    //   return chat.id === channelId.id
-    //     ? chat.messages.map((msg) => {
-    //         return console.log(msg.createdAt.seconds);
-    //       })
-    //     : "";
-    // });
-
     closeTagg();
     const msg = {
       userChatId: user.uid,
@@ -226,6 +205,7 @@ function Chat() {
       setSelected(true);
     }
   };
+
   const handleValue = (e) => {
     setSearch(e.target.value);
   };
@@ -650,7 +630,12 @@ function Chat() {
                                         }
                                       >
                                         <span className="full-container">
-                                          <div className="tagg-textContainer">
+                                          <div
+                                            className="tagg-textContainer"
+                                            onClick={(e) => {
+                                              handleTaggClick(e, message);
+                                            }}
+                                          >
                                             <p className="whoTaggedIn">
                                               {" "}
                                               {user.uid ===
@@ -669,9 +654,6 @@ function Chat() {
                                               className="taggedText"
                                               // this ref is also imp.
                                               ref={ref}
-                                              onClick={(e) => {
-                                                handleTaggClick(e, message);
-                                              }}
                                             >
                                               {
                                                 message.taggedText.taggedMesg
@@ -716,7 +698,12 @@ function Chat() {
                                         }
                                       >
                                         <span className="full-Container">
-                                          <div className="tagg-textContainer-receiver">
+                                          <div
+                                            className="tagg-textContainer-receiver"
+                                            onClick={(e) => {
+                                              handleTaggClick(e, message);
+                                            }}
+                                          >
                                             <p className="whoTaggedIn">
                                               {" "}
                                               {user.uid ===
