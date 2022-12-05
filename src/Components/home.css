@@ -230,11 +230,12 @@
 .header {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
 }
 .SearchInputBtn-container {
   display: flex;
   flex: 2;
+  margin-top: 1rem;
 }
 
 .new-blog-container {
@@ -350,4 +351,21 @@
   height: 30px;
   width: 30px;
   border-radius: 50%;
+}
+
+/* About section>>>>> */
+
+.about-section {
+  height: 50px;
+  width: 50px;
+  background-color: blueviolet;
+  border-radius: 0 0 0 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.about-icon {
+  color: white;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
 }

@@ -13,7 +13,8 @@ import { useState, useEffect } from "react";
 import { useUserAuth } from "../Context/userAuthContext";
 import { db } from "../firebase";
 import { BsArrowLeft } from "react-icons/bs";
-
+import { RiBarChartHorizontalFill } from "react-icons/ri";
+import { MdClose } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
 
 import {
@@ -30,6 +31,7 @@ const Home = () => {
   const [chats, setChats] = useState();
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [about, setAbout] = useState(false);
 
   const { user } = useUserAuth();
 
@@ -201,6 +203,16 @@ const Home = () => {
               ""
             )}
           </div>
+        </div>
+        <div className="about-section">
+          {about === false ? (
+            <RiBarChartHorizontalFill
+              className="about-icon"
+              onClick={() => setAbout(!about)}
+            />
+          ) : (
+            <MdClose className="about-icon" onClick={() => setAbout(!about)} />
+          )}
         </div>
       </div>
       {searchResults.length ? (
