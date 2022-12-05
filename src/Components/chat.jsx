@@ -54,19 +54,7 @@ function Chat() {
     setTaggedInput(e.target.value);
   };
 
-  // chats &&
-  // chats.map((chat) => {
-  //   return chat.id === channelId.id
-  //     ? chat.messages.reduce((acc, value) => {
-  //         acc[value.createdAt.seconds] = createRef();
-  //         return acc;
-  //       }, {})
-  //     : "";
-  // });
-
   const handleTaggClick = (e, message) => {
-    // console.log("message", message);
-
     setTaggedMsg(e.target.innerHTML);
     setTimeout(() => {
       setTaggedMsg("");
@@ -81,6 +69,7 @@ function Chat() {
   };
 
   const handleSend = async () => {
+    console.log("messages", messages);
     closeTagg();
     const msg = {
       userChatId: user.uid,
@@ -536,9 +525,9 @@ function Chat() {
                                       {message.userChatId === user.uid ? (
                                         <>
                                           <div
-                                            onDoubleClick={() => {
-                                              taggMe(message);
-                                            }}
+                                            // onDoubleClick={() => {
+                                            //   taggMe(message);
+                                            // }}
                                             className={
                                               message.userChatId === user.uid
                                                 ? "sender"
@@ -549,9 +538,6 @@ function Chat() {
                                               ref={
                                                 refs[message.createdAt.seconds]
                                               }
-                                              onClick={(e) => {
-                                                handleTaggClick(e, message);
-                                              }}
                                             >
                                               {message.text}
                                             </p>
@@ -580,9 +566,6 @@ function Chat() {
                                             }
                                           ></div>
                                           <div
-                                            onDoubleClick={() => {
-                                              taggMe(message);
-                                            }}
                                             className={
                                               message.userChatId === user.uid
                                                 ? "sender"
@@ -590,9 +573,6 @@ function Chat() {
                                             }
                                           >
                                             <p
-                                              onClick={(e) => {
-                                                handleTaggClick(e, message);
-                                              }}
                                               ref={
                                                 refs[message.createdAt.seconds]
                                               }
@@ -620,9 +600,6 @@ function Chat() {
                                   {message.userChatId === user.uid ? (
                                     <>
                                       <div
-                                        onDoubleClick={() => {
-                                          taggMe(message);
-                                        }}
                                         className={
                                           message.userChatId === user.uid
                                             ? "sender"
@@ -688,9 +665,6 @@ function Chat() {
                                         }
                                       ></div>
                                       <div
-                                        onDoubleClick={() => {
-                                          taggMe(message);
-                                        }}
                                         className={
                                           message.userChatId === user.uid
                                             ? "sender"
