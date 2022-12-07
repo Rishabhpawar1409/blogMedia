@@ -1,5 +1,4 @@
 import React from "react";
-
 import "./home.css";
 import { Link } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
@@ -14,7 +13,7 @@ import { useUserAuth } from "../Context/userAuthContext";
 import { db } from "../firebase";
 import { BsArrowLeft } from "react-icons/bs";
 import { RiBarChartHorizontalFill } from "react-icons/ri";
-import { MdClose } from "react-icons/md";
+
 import { AiOutlineSearch } from "react-icons/ai";
 
 import {
@@ -162,6 +161,10 @@ const Home = () => {
       return blog.title.includes(input) ? setSearchResults([blog.blogId]) : "";
     });
   };
+
+  const closeMe = () => {
+    setAbout(!about);
+  };
   return (
     <>
       <div className="header">
@@ -204,17 +207,8 @@ const Home = () => {
             )}
           </div>
         </div>
-        <div className="about-section">
-          {about === false ? (
-            <RiBarChartHorizontalFill
-              className="about-icon"
-              onClick={() => setAbout(!about)}
-            />
-          ) : (
-            <MdClose className="about-icon" onClick={() => setAbout(!about)} />
-          )}
-        </div>
       </div>
+
       {searchResults.length ? (
         <div>
           {searchResults &&
