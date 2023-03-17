@@ -3,14 +3,13 @@ import { useUserAuth } from "../Context/userAuthContext";
 import { Link, useLocation } from "react-router-dom";
 import { MdLocationOn } from "react-icons/md";
 import { BsCalendarEvent } from "react-icons/bs";
-import { Popover } from "@material-ui/core";
 
 import {
   getDocs,
   collection,
   doc,
   updateDoc,
-  setDoc
+  setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import "./profile.css";
@@ -71,14 +70,14 @@ function Profile() {
       return you.userId === user.uid
         ? await updateDoc(doc(db, "users", you.id), {
             ...you,
-            following: [...you.following, person.userId]
+            following: [...you.following, person.userId],
           })
         : "";
     });
 
     await updateDoc(doc(db, "users", person.id), {
       ...person,
-      followers: [...person.followers, user.uid]
+      followers: [...person.followers, user.uid],
     });
   };
   const handleUnfollow = async (person) => {
@@ -94,8 +93,8 @@ function Profile() {
             following: [
               ...you.following.filter((checker) => {
                 return checker !== person.userId;
-              })
-            ]
+              }),
+            ],
           })
         : "";
     });
@@ -105,8 +104,8 @@ function Profile() {
       followers: [
         ...person.followers.filter((checker) => {
           return checker !== user.uid;
-        })
-      ]
+        }),
+      ],
     });
   };
   const handleMessage = async (person) => {
@@ -121,7 +120,7 @@ function Profile() {
 
     if (checkerBoolean === false) {
       await setDoc(doc(db, "chats", combineId), {
-        messages: []
+        messages: [],
       });
     }
   };
@@ -171,21 +170,21 @@ function Profile() {
                         Following : {person.following.length}
                       </p>
                     </div>
-                    <Popover
+                    {/* <Popover
                       PaperProps={{
                         style: {
                           width: "250px",
                           marginLeft: "26.5rem",
                           height: "fitContent",
-                          textAlign: "center"
-                        }
+                          textAlign: "center",
+                        },
                       }}
                       open={Boolean(anchor)}
                       anchorEl={anchor}
                       onClose={handleClose}
                       anchorOrigin={{
                         vertical: "center",
-                        horizontal: "left"
+                        horizontal: "left",
                       }}
                     >
                       {person.followers.length ? (
@@ -204,17 +203,17 @@ function Profile() {
                                 <Link
                                   to={{
                                     pathname: "/profile",
-                                    hash: "#singleUser"
+                                    hash: "#singleUser",
                                   }}
                                   style={{
                                     textDecoration: "none",
-                                    color: "black"
+                                    color: "black",
                                   }}
                                   state={{
                                     profileUser: {
                                       userId: soloUser.userId,
-                                      userEmail: soloUser.userEmail
-                                    }
+                                      userEmail: soloUser.userEmail,
+                                    },
                                   }}
                                 >
                                   <p
@@ -241,15 +240,15 @@ function Profile() {
                           width: "250px",
                           marginLeft: "26.5rem",
                           height: "fitContent",
-                          textAlign: "center"
-                        }
+                          textAlign: "center",
+                        },
                       }}
                       open={Boolean(anchor2)}
                       anchorEl={anchor2}
                       onClose={handleClose}
                       anchorOrigin={{
                         vertical: "center",
-                        horizontal: "left"
+                        horizontal: "left",
                       }}
                     >
                       {person.following.length ? (
@@ -268,17 +267,17 @@ function Profile() {
                                 <Link
                                   to={{
                                     pathname: "/profile",
-                                    hash: "#singleUser"
+                                    hash: "#singleUser",
                                   }}
                                   style={{
                                     textDecoration: "none",
-                                    color: "black"
+                                    color: "black",
                                   }}
                                   state={{
                                     profileUser: {
                                       userId: soloUser.userId,
-                                      userEmail: soloUser.userEmail
-                                    }
+                                      userEmail: soloUser.userEmail,
+                                    },
                                   }}
                                 >
                                   <p
@@ -299,7 +298,7 @@ function Profile() {
                       ) : (
                         <p>No following!</p>
                       )}
-                    </Popover>
+                    </Popover> */}
 
                     {profile &&
                       profile.map((checker) => {
@@ -336,7 +335,7 @@ function Profile() {
                                   personChannelId:
                                     person.userId > user.uid
                                       ? person.userId + user.uid
-                                      : user.uid + person.userId
+                                      : user.uid + person.userId,
                                 }}
                               >
                                 <button
