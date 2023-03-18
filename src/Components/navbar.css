@@ -2,7 +2,7 @@
   display: flex;
   height: 55px;
   width: 100%;
-  background-color: blueviolet;
+  background-color: #E96479;
   justify-content: space-between;
 }
 .nav-actions {

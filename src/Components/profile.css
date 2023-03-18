@@ -60,7 +60,7 @@
   border: 1px solid grey;
 }
 .edit-btn:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .avatar {
   width: 100%;
@@ -79,7 +79,7 @@
 }
 .locationIcon {
   font-size: 20px;
-  color: blueviolet;
+  color: #E96479;
 }
 .profile-joiningDate {
   margin-left: 0.75rem;
@@ -88,7 +88,7 @@
 }
 .calendar {
   font-size: 20px;
-  color: blueviolet;
+  color: #E96479;
   padding-right: 5px;
 }
 .profile-status {
@@ -111,7 +111,7 @@
   margin-top: 1rem;
 }
 .follow-btn:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .Unfollow-btn {
   height: 35px;
@@ -125,7 +125,7 @@
 }
 
 .Unfollow-btn:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 
 .message-btn {
@@ -139,7 +139,7 @@
   margin-top: 1rem;
 }
 .message-btn:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .allProfileBlogs-container {
   display: flex;
@@ -197,12 +197,12 @@
 }
 .likeBtn {
   font-size: 20px;
-  color: blueviolet;
+  color: #E96479;
   cursor: pointer;
 }
 .commentBtn {
   font-size: 20px;
-  color: blueviolet;
+  color: #E96479;
   cursor: pointer;
   margin-left: 1rem;
 }
@@ -236,7 +236,7 @@
   font-family: sans-serif;
 }
 .userName-input:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .status-input {
   margin-top: 0.5rem;
@@ -252,7 +252,7 @@
   font-family: sans-serif;
 }
 .status-input:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .location-input {
   margin-top: 0.5rem;
@@ -265,7 +265,7 @@
   font-family: sans-serif;
 }
 .location-input:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .file-button {
   display: none;
@@ -274,7 +274,7 @@
   margin-top: 0.5rem;
   cursor: pointer;
   font-size: 30px;
-  color: blueviolet;
+  color: #E96479;
 }
 .image-container {
   margin-top: 1rem;
@@ -295,7 +295,7 @@
   background-color: white;
 }
 .save-btn:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .user-avatar {
   width: 100%;

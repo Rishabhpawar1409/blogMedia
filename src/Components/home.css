@@ -38,7 +38,7 @@
   margin-left: 1rem;
 }
 .searchBlog:hover {
-  border: 2px solid blueviolet;
+  border: 2px solid #E96479;
 }
 .searchBtn-container {
   display: flex;
@@ -48,7 +48,7 @@
 }
 .searchBtn {
   font-size: 22px;
-  color: blueviolet;
+  color: #E96479;
   cursor: pointer;
 }
 .goBack-container {
@@ -58,7 +58,7 @@
 }
 .goBackBtn {
   font-size: 20px;
-  color: blueviolet;
+  color: #E96479;
   cursor: pointer;
   margin-left: 1rem;
 }
@@ -261,7 +261,7 @@
   background-color: white;
 }
 .explore-btn:hover {
-  background-color: blueviolet;
+  background-color: #E96479;
   color: white;
   border: 2px solid white;
 }
@@ -278,13 +278,13 @@
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  background-color: blueviolet;
+  background-color: #E96479;
 }
 .createYourOwnBlog-Link {
   text-decoration: none;
 }
 .Add-btn {
-  background-color: blueviolet;
+  background-color: #E96479;
   color: white;
   border: none;
   font-size: 39px;
@@ -358,7 +358,7 @@
 .about-section {
   height: 50px;
   width: 50px;
-  background-color: blueviolet;
+  background-color: #E96479;
   border-radius: 0 0 0 45px;
   display: flex;
   justify-content: center;
@@ -381,7 +381,7 @@
 .closeMe {
   height: 50px;
   width: 50px;
-  background-color: blueviolet;
+  background-color: #E96479;
   border-radius: 0 0 0 45px;
   display: flex;
   justify-content: center;

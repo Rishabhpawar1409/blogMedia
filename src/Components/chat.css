@@ -3,13 +3,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: grey;
+  background-color: whitesmoke;
 }
 .chat-container {
   height: 600px;
   width: 850px;
   display: flex;
   overflow: hidden;
+  box-shadow: 5px 5px 8px 3px #aaaaaa;
+  border-radius: 10px;
+
 }
 .users-container {
   flex: 1;
@@ -74,7 +77,7 @@
   margin-top: 1rem;
   cursor: pointer;
   font-size: 20px;
-  color: blueviolet;
+  color: #E96479;
 }
 .send-icon {
   font-size: 25px;
@@ -85,7 +88,7 @@
   width: 40px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: blueviolet;
+  background-color: #E96479;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +135,7 @@
   align-items: center;
   height: 40px;
   width: 40px;
-  background-color: blueviolet;
+  background-color: #E96479;
   border-radius: 50%;
 }
 .userList-container {
@@ -163,7 +166,7 @@
 }
 .chatNav-container {
   flex: 0.122;
-  background-color: blueviolet;
+  background-color: #E96479;
   color: whitesmoke;
   border-radius: 0px 10px 0px 0px;
 }
@@ -194,7 +197,7 @@
 .chat-text {
   margin-top: 3rem;
   font-size: 25px;
-  color: blueviolet;
+  color: #E96479;
 }
 .text-container {
   width: 100%;
@@ -227,7 +230,7 @@
   flex-direction: column;
   background-color: #b9bbde;
   border-radius: 5px;
-  border-left: 4px solid blueviolet;
+  border-left: 4px solid #E96479;
   align-items: flex-start;
 }
 .taggedText {
@@ -313,7 +316,7 @@
 }
 .sender {
   display: flex;
-  background-color: blueviolet;
+  background-color: #E96479;
   padding: 4px;
   border-radius: 8px 0px 8px 8px;
   margin-left: auto;
@@ -331,13 +334,13 @@
 .close-icon {
   margin-right: 0.5rem;
   font-size: 15px;
-  color: blueviolet;
+  color: #E96479;
   cursor: pointer;
 }
 .sender-blog {
   height: 70px;
   display: flex;
-  background-color: blueviolet;
+  background-color: #E96479;
   padding: 4px;
   border-radius: 8px 0px 8px 8px;
   margin-left: auto;
@@ -362,7 +365,7 @@
   margin-top: 0.25rem;
   width: 0;
   height: 0;
-  border-top: 10px solid blueviolet;
+  border-top: 10px solid #E96479;
   border-right: 10px solid transparent;
   border-radius: 0px 5px 0px 0px;
 }
@@ -417,7 +420,7 @@
   margin-bottom: 4.35rem;
 }
 .taggedMesg-conatiner {
-  border-left: 5px solid blueviolet;
+  border-left: 5px solid #E96479;
   margin: 0.5rem;
   border-radius: 7px;
   background-color: whitesmoke;
@@ -425,7 +428,7 @@
   padding-top: 0.25rem;
 }
 .authorOfMessage {
-  color: blueviolet;
+  color: #E96479;
   font-size: 12px;
 }
 .userImage-container {
@@ -445,7 +448,7 @@
   height: fit-content;
   width: fit-content;
   padding: 4px;
-  background: blueviolet;
+  background: #E96479;
   border-radius: 0.5rem;
 }
 .user-containerSelected {
