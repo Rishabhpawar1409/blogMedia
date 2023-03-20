@@ -165,7 +165,7 @@
   margin-top: 0.25rem;
   margin-left: 16rem;
   position: absolute;
-  color: black;
+  color:#E96479;
   font-size: 25px;
   cursor: pointer;
 }
@@ -219,10 +219,9 @@
   font-size: 20px;
   cursor: pointer;
   padding-right: 3px;
+  color:#E96479;
 }
-.heart-false {
-  color: tomato;
-}
+
 .time {
   margin-left: 8rem;
   font-size: 13px;

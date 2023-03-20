@@ -28,7 +28,11 @@ function SingleBlog() {
                   <div className="userInfo-container">
                     <img
                       className="likeUserImg"
-                      src={user.userAvatar}
+                      src={
+                        user.userAvatar === null
+                          ? "Assets/user.jpg"
+                          : user.userAvatar
+                      }
                       alt="avatar"
                     />
                     <p className="LikeUserName">{user.userName}</p>

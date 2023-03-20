@@ -7,7 +7,8 @@ import { useUserAuth } from "../Context/userAuthContext";
 import { db } from "../firebase";
 import { getDocs, collection, doc, updateDoc } from "firebase/firestore";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { left } from "@popperjs/core";
+
+// import { left } from "@popperjs/core";
 
 function Favourite() {
   const { user } = useUserAuth();
@@ -66,11 +67,15 @@ function Favourite() {
                     <div className="userAvatar-container">
                       <img
                         className="userAvatar"
-                        src="Assets/user.jpg"
+                        src={
+                          blog.userInfo.userAvatar === null
+                            ? "Assets/user.jpg"
+                            : blog.userInfo.userAvatar
+                        }
                         alt="avatar"
                       />
-                      {/* <p className="userName">{blog.userInfo.userEmail}</p> */}
                     </div>
+                    <p className="userName">{blog.userInfo.userName}</p>
                   </div>
                   <div className="title">
                     <p>{blog.title}</p>
@@ -115,9 +120,6 @@ function Favourite() {
               {" "}
               is nothing in the favourite.
             </span>
-            {/* <h1 className="text">
-              Oops! Looks like there <br></br>is nothing in the favourite.
-            </h1> */}
           </div>
           <div className="exloreBtn-container">
             <Link to="/">

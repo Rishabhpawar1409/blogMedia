@@ -7,7 +7,6 @@ import { GrNext } from "react-icons/gr";
 import { GrPrevious } from "react-icons/gr";
 import uuid from "react-uuid";
 import { useUserAuth } from "../Context/userAuthContext";
-// import { useLocation } from "react-router-dom";
 import { db } from "../firebase";
 import {
   addDoc,
@@ -119,11 +118,17 @@ function OwnBlog() {
   };
 
   const handleCreateBlog = async () => {
-    const avatar = users.map((checker) => {
-      return checker.userId === user.uid ? checker.userAvatar : "";
+    let avatar;
+    users.map((checker) => {
+      if (checker.userId === user.uid) {
+        avatar = checker.userAvatar;
+      }
     });
-    const name = users.map((checker) => {
-      return checker.userId === user.uid ? checker.userName : "";
+    let name;
+    users.map((checker) => {
+      if (checker.userId === user.uid) {
+        name = checker.userName;
+      }
     });
 
     await addDoc(collection(db, "blogs"), {
@@ -138,12 +143,8 @@ function OwnBlog() {
       userInfo: {
         userId: user.uid,
         userEmail: user.email,
-        userAvatar: avatar.filter((checker) => {
-          return checker !== "";
-        }),
-        userName: name.filter((checker) => {
-          return checker !== "";
-        }),
+        userAvatar: avatar,
+        userName: name,
       },
     });
     users.map(async (singleUser) => {

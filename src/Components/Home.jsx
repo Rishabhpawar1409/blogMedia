@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
-import { BsStars } from "react-icons/bs";
+import { FaThumbsUp, FaRegThumbsUp } from "react-icons/fa";
 import { ImBin } from "react-icons/im";
 import { TbSend } from "react-icons/tb";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
@@ -27,7 +27,7 @@ const Home = () => {
   const [chats, setChats] = useState();
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
+  const [favBlogsList, setFavBlogsList] = useState([]);
   const { user } = useUserAuth();
   const navigate = useNavigate();
 
@@ -47,6 +47,14 @@ const Home = () => {
     const getUsersData = async () => {
       const get = await getDocs(collection(db, "users"));
       setUsers(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const temp_users = get.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const blogsList = [];
+      temp_users.map((user) => {
+        user.userFavBlogs.map((blog) => {
+          blogsList.push(blog.blogId);
+        });
+      });
+      setFavBlogsList(blogsList);
     };
     getUsersData();
   }, []);
@@ -70,6 +78,14 @@ const Home = () => {
     const getUsersData = async () => {
       const get = await getDocs(collection(db, "users"));
       setUsers(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const temp_users = get.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const blogsList = [];
+      temp_users.map((user) => {
+        user.userFavBlogs.map((blog) => {
+          blogsList.push(blog.blogId);
+        });
+      });
+      setFavBlogsList(blogsList);
     };
     getUsersData();
   };
@@ -154,16 +170,6 @@ const Home = () => {
     getData();
   };
 
-  // const decideImage = (blog) => {
-  //   if (
-  //     blog.userInfo.userAvatar ===
-  //     "blob:https://mvogbj.csb.app/1f66a17c-c794-496b-9cee-f58515ab37e4"
-  //   ) {
-  //     return "Assets/user.jpg";
-  //   } else {
-  //     return blog.userInfo.userAvatar;
-  //   }
-  // };
   const [animationParent] = useAutoAnimate();
 
   const handleChange = (e) => {
@@ -249,19 +255,15 @@ const Home = () => {
                       <div className="userName-container">
                         <>
                           <div className="userAvatar-container">
-                            {blog.userInfo.userAvatar ? (
-                              <img
-                                className="userAvatar"
-                                src={blog.userInfo.userAvatar}
-                                alt="avatar"
-                              />
-                            ) : (
-                              <img
-                                className="userAvatar"
-                                src="Assets/user.jpg"
-                                alt="Avatar"
-                              />
-                            )}
+                            <img
+                              className="userAvatar"
+                              src={
+                                blog.userInfo.userAvatar === null
+                                  ? "Assets/user.jpg"
+                                  : blog.userInfo.userAvatar
+                              }
+                              alt="avatar"
+                            />
                           </div>
                           <p className="userName">
                             <Link
@@ -274,20 +276,20 @@ const Home = () => {
                                 },
                               }}
                             >
-                              {blog.userInfo.userName
-                                ? blog.userInfo.userName
-                                : blog.userInfo.userEmail}
+                              {blog.userInfo.userEmail}
                             </Link>
                           </p>
                           {users &&
                             users.map((user) => {
                               return user.userFavBlogs.includes() ? (
-                                <p className="added" key={user.userId}>
-                                  Saved (:
-                                </p>
-                              ) : (
-                                <BsStars
+                                <AiFillHeart
+                                  key={user.userId}
                                   className="favBtn"
+                                />
+                              ) : (
+                                <AiOutlineHeart
+                                  className="favBtn"
+                                  key={user.userId}
                                   onClick={() => {
                                     handleAddToFav(blog);
                                   }}
@@ -351,7 +353,7 @@ const Home = () => {
                       <div className="likes-time-container">
                         <div className="likes">
                           {blog.Likes.includes(user ? user.uid : "") ? (
-                            <AiFillHeart
+                            <FaThumbsUp
                               className="heart"
                               color="tomato"
                               onClick={(e) => {
@@ -359,7 +361,7 @@ const Home = () => {
                               }}
                             />
                           ) : (
-                            <AiOutlineHeart
+                            <FaRegThumbsUp
                               className=" heart heart-false"
                               onClick={(e) => {
                                 letUsersLike(blog);
@@ -421,19 +423,15 @@ const Home = () => {
                       <div className="userName-container">
                         <>
                           <div className="userAvatar-container">
-                            {blog.userInfo.userAvatar ? (
-                              <img
-                                className="userAvatar"
-                                src={blog.userInfo.userAvatar}
-                                alt="avatar"
-                              />
-                            ) : (
-                              <img
-                                className="userAvatar"
-                                src="Assets/user.jpg"
-                                alt="Avatar"
-                              />
-                            )}
+                            <img
+                              className="userAvatar"
+                              src={
+                                blog.userInfo.userAvatar === null
+                                  ? "Assets/user.jpg"
+                                  : blog.userInfo.userAvatar
+                              }
+                              alt="avatar"
+                            />
                           </div>
                           <p className="userName">
                             <Link
@@ -452,21 +450,17 @@ const Home = () => {
                             </Link>
                           </p>
 
-                          {users &&
-                            users.map((user) => {
-                              return user.userFavBlogs.includes() ? (
-                                <p className="added" key={user.userId}>
-                                  Saved (:
-                                </p>
-                              ) : (
-                                <BsStars
-                                  className="favBtn"
-                                  onClick={() => {
-                                    handleAddToFav(blog);
-                                  }}
-                                />
-                              );
-                            })}
+                          {favBlogsList.includes(blog.blogId) ? (
+                            <AiFillHeart key={user.userId} className="favBtn" />
+                          ) : (
+                            <AiOutlineHeart
+                              className="favBtn"
+                              key={user.userId}
+                              onClick={() => {
+                                handleAddToFav(blog);
+                              }}
+                            />
+                          )}
                         </>
                       </div>
                       <div className="title">
@@ -484,42 +478,6 @@ const Home = () => {
                           <p className="read-text">read more..</p>
                         </Link>
                       </div>
-
-                      {/* {users &&
-                      users.map((you) => {
-                        return you.userId === user.uid
-                          ? you.userFavBlogs.map((b) => {
-                              return (
-                                console.log(b),
-                                b.blogId !== blog.blogId ? (
-                                  <BsStars
-                                    className="favBtn"
-                                    onClick={() => {
-                                      handleAddToFav(blog);
-                                    }}
-                                  />
-                                ) : (
-                                  <p className="added">Added (:</p>
-                                )
-                              );
-                            })
-                          : "";
-                      })} */}
-                      {/* {users &&
-                      users.map((user) => {
-                        return user.userFavBlogs.map((Favblog) => {
-                          return Favblog.blogId === blog.blogId ? (
-                            <p className="added">Added (:</p>
-                          ) : (
-                            <BsStars
-                              className="favBtn"
-                              onClick={() => {
-                                handleAddToFav(blog);
-                              }}
-                            />
-                          );
-                        });
-                      })} */}
 
                       {user ? (
                         blog.userInfo.userId === user.uid ? (
@@ -579,17 +537,16 @@ const Home = () => {
                       <div className="likes-time-container">
                         <div className="likes">
                           {blog.Likes.includes(user ? user.uid : "") ? (
-                            <AiFillHeart
+                            <FaThumbsUp
                               className="heart"
-                              color="tomato"
-                              onClick={(e) => {
+                              onClick={() => {
                                 letUsersLike(blog);
                               }}
                             />
                           ) : (
-                            <AiOutlineHeart
-                              className=" heart heart-false"
-                              onClick={(e) => {
+                            <FaRegThumbsUp
+                              className=" heart"
+                              onClick={() => {
                                 letUsersLike(blog);
                               }}
                             />
