@@ -139,7 +139,7 @@ function Profile() {
     <div className="profile-window">
       {newProfile === true ? <Dummy /> : ""}
       {profile
-        ? profile.map((person) => {
+        ? profile.map((person, index) => {
             if (person.userId === idDecider()) {
               return (
                 <>
@@ -147,7 +147,11 @@ function Profile() {
                     <div className="profile-avatar">
                       <img
                         className="avatar"
-                        src={person.userAvatar}
+                        src={
+                          person.userAvatar === null
+                            ? "Assets/user.jpg"
+                            : person.userAvatar
+                        }
                         alt="Avatar"
                       />
                     </div>
@@ -301,9 +305,9 @@ function Profile() {
                     </Popover> */}
 
                     {profile &&
-                      profile.map((checker) => {
-                        return checker.userId.includes(user.uid) ? (
-                          <div>
+                      profile.map((checker, index) => {
+                        return checker.userId === user.uid ? (
+                          <div key={index}>
                             {person.userId !== user.uid ? (
                               person.followers.includes(user.uid) ? (
                                 <button
@@ -328,7 +332,7 @@ function Profile() {
                               ""
                             )}
 
-                            {person.userId !== user.uid ? (
+                            {person.followers.includes(user.uid) ? (
                               <Link
                                 to={{ pathname: "/chat", hash: "#Message" }}
                                 state={{
@@ -370,8 +374,10 @@ function Profile() {
                       <p>{person.joinedOn.toDate().toDateString()}</p>
                     </div>
                     <div className="profile-status">
-                      <h4 className="status-text">Status:</h4>{" "}
-                      <p>{person.userStatus}</p>
+                      <h4 className="status-text">Status:</h4>
+                      <p style={{ marginLeft: "0.15rem" }}>
+                        {person.userStatus}
+                      </p>
                     </div>
                     {person.userId === user.uid ? (
                       <Link to="/editProfile">
@@ -381,10 +387,10 @@ function Profile() {
                       ""
                     )}
                   </div>
-                  <div className="allProfileBlogs-container">
-                    {person.userBlogs.map((blog) => {
+                  <div className="allProfileBlogs-container" key={index}>
+                    {person.userBlogs.map((blog, index) => {
                       return (
-                        <div>
+                        <div key={index}>
                           <div className="profile-blogs" key={blog.bloId}>
                             <img
                               className="profile-blog-background"

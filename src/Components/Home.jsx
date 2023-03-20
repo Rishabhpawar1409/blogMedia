@@ -1,6 +1,6 @@
 import React from "react";
 import "./home.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineHeart } from "react-icons/ai";
 import { AiFillHeart } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
@@ -12,16 +12,13 @@ import { useState, useEffect } from "react";
 import { useUserAuth } from "../Context/userAuthContext";
 import { db } from "../firebase";
 import { BsArrowLeft } from "react-icons/bs";
-import { RiBarChartHorizontalFill } from "react-icons/ri";
-
 import { AiOutlineSearch } from "react-icons/ai";
-
 import {
   getDocs,
   collection,
   deleteDoc,
   doc,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
 
 const Home = () => {
@@ -30,9 +27,9 @@ const Home = () => {
   const [chats, setChats] = useState();
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [about, setAbout] = useState(false);
 
   const { user } = useUserAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getBlogsData = async () => {
@@ -65,7 +62,7 @@ const Home = () => {
             userCountry: currUser.userCountry,
             userStatus: currUser.userStatus,
             userFavBlogs: [...currUser.userFavBlogs, blog],
-            userId: currUser.userId
+            userId: currUser.userId,
           })
         : "";
     });
@@ -75,6 +72,23 @@ const Home = () => {
       setUsers(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getUsersData();
+  };
+
+  const letUsersLike = (blog) => {
+    let temp_boolean = false;
+
+    users.map((checker) => {
+      if (checker.userId === user.uid) {
+        temp_boolean = true;
+      }
+    });
+
+    if (temp_boolean === false) {
+      console.log("Navigate the user!");
+      navigate("/editProfile");
+    } else {
+      handleLikes(blog);
+    }
   };
 
   const handleLikes = async (blog) => {
@@ -90,19 +104,19 @@ const Home = () => {
                 ...blog,
                 Likes: blog.Likes.filter((checker) => {
                   return checker !== user.uid;
-                })
+                }),
               });
             } else {
               await updateDoc(doc(db, "blogs", blog.id), {
                 ...blog,
-                Likes: [...blog.Likes, user.uid]
+                Likes: [...blog.Likes, user.uid],
               });
             }
             getBlogsData();
           })
         : await updateDoc(doc(db, "blogs", blog.id), {
             ...blog,
-            Likes: [...blog.Likes, user.uid]
+            Likes: [...blog.Likes, user.uid],
           }),
       getBlogsData()
     );
@@ -111,7 +125,7 @@ const Home = () => {
   const handleEdit = async (blog) => {
     await updateDoc(doc(db, "blogs", blog.id), {
       ...blog,
-      edit: true
+      edit: true,
     });
   };
 
@@ -126,7 +140,7 @@ const Home = () => {
               ...soloUser,
               userBlogs: soloUser.userBlogs.filter((checker) => {
                 return checker.blogId !== blog.blogId;
-              })
+              }),
             })
           : soloUser;
       });
@@ -140,16 +154,16 @@ const Home = () => {
     getData();
   };
 
-  const decideImage = (blog) => {
-    if (
-      blog.userInfo.userAvatar ===
-      "blob:https://mvogbj.csb.app/1f66a17c-c794-496b-9cee-f58515ab37e4"
-    ) {
-      return "Assets/user.jpg";
-    } else {
-      return blog.userInfo.userAvatar;
-    }
-  };
+  // const decideImage = (blog) => {
+  //   if (
+  //     blog.userInfo.userAvatar ===
+  //     "blob:https://mvogbj.csb.app/1f66a17c-c794-496b-9cee-f58515ab37e4"
+  //   ) {
+  //     return "Assets/user.jpg";
+  //   } else {
+  //     return blog.userInfo.userAvatar;
+  //   }
+  // };
   const [animationParent] = useAutoAnimate();
 
   const handleChange = (e) => {
@@ -162,8 +176,18 @@ const Home = () => {
     });
   };
 
-  const closeMe = () => {
-    setAbout(!about);
+  const handleCreateBlog = () => {
+    let temp_variable = false;
+    users.map((checker) => {
+      if (checker.userId === user.uid) {
+        temp_variable = true;
+      }
+    });
+    if (temp_variable === true) {
+      navigate("/yourBlog");
+    } else {
+      navigate("/editProfile");
+    }
   };
   return (
     <>
@@ -246,8 +270,8 @@ const Home = () => {
                               state={{
                                 profileUser: {
                                   userId: blog.userInfo.userId,
-                                  userEmail: blog.userInfo.userEmail
-                                }
+                                  userEmail: blog.userInfo.userEmail,
+                                },
                               }}
                             >
                               {blog.userInfo.userName
@@ -331,14 +355,14 @@ const Home = () => {
                               className="heart"
                               color="tomato"
                               onClick={(e) => {
-                                handleLikes(blog);
+                                letUsersLike(blog);
                               }}
                             />
                           ) : (
                             <AiOutlineHeart
                               className=" heart heart-false"
                               onClick={(e) => {
-                                handleLikes(blog);
+                                letUsersLike(blog);
                               }}
                             />
                           )}
@@ -368,19 +392,21 @@ const Home = () => {
             {user ? (
               <h4 className="create-blogText">
                 {" "}
-                {`Hey! ${
-                  user.displayName || user.email
-                } create your own blog (:`}
+                {`Hey! ${user.email} create your own blog (:`}
               </h4>
             ) : (
               ""
             )}
-
-            <Link className="createYourOwnBlog-Link" to="/yourBlog">
-              <div className="btn-container">
-                <button className="Add-btn">+</button>
-              </div>
-            </Link>
+            <div className="btn-container">
+              <button
+                className="Add-btn"
+                onClick={() => {
+                  handleCreateBlog();
+                }}
+              >
+                +
+              </button>
+            </div>
           </div>
           {blogData
             ? blogData.map((blog) => {
@@ -416,8 +442,8 @@ const Home = () => {
                               state={{
                                 profileUser: {
                                   userId: blog.userInfo.userId,
-                                  userEmail: blog.userInfo.userEmail
-                                }
+                                  userEmail: blog.userInfo.userEmail,
+                                },
                               }}
                             >
                               {blog.userInfo.userName
@@ -536,7 +562,7 @@ const Home = () => {
                                   <Link
                                     to={{
                                       pathname: "/chat",
-                                      hash: "#shareBlog"
+                                      hash: "#shareBlog",
                                     }}
                                     hash="#shareBlog"
                                     state={{ blog: { blog } }}
@@ -557,14 +583,14 @@ const Home = () => {
                               className="heart"
                               color="tomato"
                               onClick={(e) => {
-                                handleLikes(blog);
+                                letUsersLike(blog);
                               }}
                             />
                           ) : (
                             <AiOutlineHeart
                               className=" heart heart-false"
                               onClick={(e) => {
-                                handleLikes(blog);
+                                letUsersLike(blog);
                               }}
                             />
                           )}

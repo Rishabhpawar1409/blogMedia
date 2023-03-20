@@ -7,6 +7,7 @@ import { useUserAuth } from "../Context/userAuthContext";
 import { db } from "../firebase";
 import { getDocs, collection, doc, updateDoc } from "firebase/firestore";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { left } from "@popperjs/core";
 
 function Favourite() {
   const { user } = useUserAuth();
@@ -39,7 +40,7 @@ function Favourite() {
               ...soloUser,
               userFavBlogs: soloUser.userFavBlogs.filter((checker) => {
                 return checker.id !== blog.id;
-              })
+              }),
             })
           : soloUser;
       });
@@ -100,9 +101,23 @@ function Favourite() {
       ) : (
         <>
           <div className="text-conatiner">
-            <h1 className="text">
+            <span style={{ fontSize: "20px", fontWeight: "bolder" }}>
+              Oops ! Looks like there{" "}
+            </span>
+            <br></br>
+            <span
+              style={{
+                fontSize: "20px",
+                fontWeight: "bolder",
+                marginLeft: "0.5rem",
+              }}
+            >
+              {" "}
+              is nothing in the favourite.
+            </span>
+            {/* <h1 className="text">
               Oops! Looks like there <br></br>is nothing in the favourite.
-            </h1>
+            </h1> */}
           </div>
           <div className="exloreBtn-container">
             <Link to="/">

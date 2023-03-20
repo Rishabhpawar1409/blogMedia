@@ -15,7 +15,7 @@ import {
   updateDoc,
   doc,
   Timestamp,
-  getDocs
+  getDocs,
 } from "firebase/firestore";
 
 function OwnBlog() {
@@ -48,7 +48,7 @@ function OwnBlog() {
                 setEditBlog(blog),
                 updateDoc(doc(db, "blogs", blog.id), {
                   ...blog,
-                  edit: false
+                  edit: false,
                 }))
               : blog;
           })
@@ -99,7 +99,7 @@ function OwnBlog() {
       edit: false,
       title,
       content,
-      themeImg: newimage
+      themeImg: newimage,
     });
 
     users.map(async (soloUser) => {
@@ -111,8 +111,8 @@ function OwnBlog() {
                 return checker.blogId === editBlog.blogId
                   ? { ...checker, title, content, themeImg: newimage }
                   : checker;
-              })
-            ]
+              }),
+            ],
           })
         : soloUser;
     });
@@ -143,8 +143,8 @@ function OwnBlog() {
         }),
         userName: name.filter((checker) => {
           return checker !== "";
-        })
-      }
+        }),
+      },
     });
     users.map(async (singleUser) => {
       return singleUser.userId === user.uid
@@ -159,14 +159,14 @@ function OwnBlog() {
                 blogId: id,
                 Likes: [],
                 comments: [],
-                themeImg: newimage
-              }
+                themeImg: newimage,
+              },
             ],
             userEmail: singleUser.userEmail,
             userCountry: singleUser.userCountry,
             userStatus: singleUser.userStatus,
             userFavBlogs: [...singleUser.userFavBlogs],
-            userId: singleUser.userId
+            userId: singleUser.userId,
           })
         : "";
     });
@@ -199,7 +199,7 @@ function OwnBlog() {
               type="text"
               value={title}
               style={{
-                backgroundImage: `url(${newimage})`
+                backgroundImage: `url(${newimage})`,
               }}
               className="title-input"
               placeholder="Give title to your blog"
@@ -213,7 +213,7 @@ function OwnBlog() {
               placeholder="word limit(35-100)"
               maxLength="1000"
               style={{
-                backgroundImage: `url(${newimage})`
+                backgroundImage: `url(${newimage})`,
               }}
               onChange={handleContent}
             ></textarea>

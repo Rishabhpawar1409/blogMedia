@@ -15,7 +15,6 @@
   flex: 0.5;
   margin-left: 10rem;
   font-weight: bolder;
-  cursor: pointer;
 }
 .myLogo-Link {
   text-decoration: none;
@@ -23,52 +22,13 @@
 .myLogo {
   font-size: 20px;
   color: white;
-}
-.search-action {
-  color: white;
-  margin-right: 1rem;
-  font-size: 21px;
   cursor: pointer;
 }
-.signUp-link {
-  text-decoration: none;
-  color: white;
-}
-.signUp-link p {
-  margin-right: 1rem;
-}
-.login-link {
-  text-decoration: none;
-  color: white;
-}
-.login-link p {
-  margin-right: 1rem;
-}
-.logOut-link {
-  margin-right: 1rem;
-
-  color: white;
-  cursor: pointer;
-}
-.profile-link {
-  text-decoration: none;
-  color: white;
-}
-.profile-link p {
-  margin-right: 1rem;
-}
-.chat-link {
-  font-size: 20px;
-  color: white;
-  margin-right: 1rem;
-}
-.nav-favroite {
-  font-weight: bolder;
-  cursor: pointer;
-}
-.favourite-icon {
-  color: white;
-  font-size: 30px;
-
-  margin-right: 1rem;
+.container-forLink{
+  height: 100%;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  width: 65px;
+  margin-right: 0.25rem;
 }

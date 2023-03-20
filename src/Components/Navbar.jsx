@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./navbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import { BsStars } from "react-icons/bs";
 import { BsChatDots } from "react-icons/bs";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import { useUserAuth } from "../Context/userAuthContext";
+import { AiOutlineHeart } from "react-icons/ai";
 
 function Navbar() {
   const { user, logout } = useUserAuth();
@@ -37,21 +37,21 @@ function Navbar() {
                   ? soloUser.userId + user.uid
                   : user.uid + soloUser.userId) === chatDoc.id
                   ? setRenderChat(true)
-                  : setRenderChat(false);
+                  : "";
               })
             : "";
         });
     }
   });
 
-  useEffect(() => {
-    if (user) {
-      profile &&
-        profile.map((checker) => {
-          return checker.userId.includes(user.uid) ? setRenderChat(true) : "";
-        });
-    }
-  });
+  // useEffect(() => {
+  //   if (user) {
+  //     profile &&
+  //       profile.map((checker) => {
+  //         return checker.userId === user.uid ? setRenderChat(true) : "";
+  //       });
+  //   }
+  // }, []);
   const navigate = useNavigate();
   const handleLogout = async () => {
     await logout();
@@ -67,50 +67,87 @@ function Navbar() {
       </div>
 
       <div className="nav-actions">
-        <div>
-          <Link to="/signUp" className="signUp-link">
-            <p>Sign Up</p>
+        <div className="container-forLink">
+          <Link to="/signUp" style={{ textDecoration: "none" }}>
+            <span
+              className="sign--Up"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Sign Up
+            </span>
           </Link>
         </div>
 
         {user ? (
           <>
-            <div>
-              <p
-                className="logOut-link"
-                style={{ color: "white", cursor: "pointer" }}
+            <div className="container-forLink">
+              <span
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+                className="logOut"
                 onClick={() => {
                   handleLogout();
                 }}
               >
-                LogOut
-              </p>
+                Logout
+              </span>
             </div>
-            <div>
-              <Link to="/profile" className="profile-link">
-                <p>Profile</p>
+
+            <div className="container-forLink">
+              <Link to="/profile" style={{ textDecoration: "none" }}>
+                <span
+                  className="profile"
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Profile
+                </span>
               </Link>
             </div>
+
             {renderChat === true ? (
-              <div>
-                <Link to="/chat" className="chat-link">
-                  <BsChatDots />
+              <div className="container-forLink">
+                <Link to="/chat" style={{ textDecoration: "none" }}>
+                  <BsChatDots
+                    style={{
+                      color: "white",
+                      fontSize: "21px",
+                      paddingLeft: "1rem",
+                    }}
+                  />
                 </Link>
               </div>
             ) : (
               ""
             )}
-
-            <div className="nav-favroite">
-              <Link to="/favourite">
-                <BsStars className="favourite-icon" />
+            <div className="container-forLink">
+              <Link to="/favourite" style={{ textDecoration: "none" }}>
+                <AiOutlineHeart
+                  style={{
+                    color: "white",
+                    fontSize: "23px",
+                  }}
+                />
               </Link>
             </div>
           </>
         ) : (
-          <div>
-            <Link to="/login" className="login-link">
-              <p>Login</p>
+          <div className="container-forLink">
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              <span
+                className="--login"
+                style={{ color: "white", fontWeight: "bold" }}
+              >
+                Login
+              </span>
             </Link>
           </div>
         )}

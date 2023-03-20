@@ -4,28 +4,30 @@ import { useUserAuth } from "../Context/userAuthContext";
 import { Link } from "react-router-dom";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import "./profile.css";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import "./profile.css";
+import uuid from "react-uuid";
 import {
   addDoc,
   collection,
   getDocs,
   doc,
   Timestamp,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function EditProfile() {
   const [userName, setUserName] = useState("");
   const [users, setUsers] = useState("");
   const [userStatus, setUserStatus] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
+  const [userAvatar, setUserAvatar] = useState(null);
   const [userLocation, setUserLocation] = useState("");
   const [blogs, setBlogs] = useState();
   const [currUser, setCurrUser] = useState();
+  const [imageFile, setImageFile] = useState(null);
 
   const { user } = useUserAuth();
-
   useEffect(() => {
     users &&
       users.map((checker) => {
@@ -53,9 +55,29 @@ function EditProfile() {
 
   const fileHandler = (e) => {
     const [file] = e.target.files;
-    setUserAvatar(URL.createObjectURL(file));
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+    if (file) {
+      if (allowedTypes.includes(file.type)) {
+        console.log("Valid file!");
+        setImageFile(file);
+      } else console.log("Invalid image, cannot upload!");
+    }
   };
+  const handleUploadImage = async () => {
+    const id = uuid();
+    if (imageFile !== null) {
+      const image = `images/${imageFile.name + id}`;
+      const imageRef = ref(storage, `images/${imageFile.name + id}`);
+      try {
+        await uploadBytes(imageRef, imageFile);
 
+        const imageUrl = await getDownloadURL(imageRef);
+        setUserAvatar(imageUrl);
+      } catch (err) {
+        console.log("Got error:", err);
+      }
+    }
+  };
   const handleSaveProfile = async () => {
     users.map(async (soloUser) => {
       return soloUser.userId === user.uid
@@ -65,7 +87,7 @@ function EditProfile() {
             isEdit: false,
             userAvatar,
             userStatus,
-            userCountry: userLocation
+            userCountry: userLocation,
           })
         : "";
     });
@@ -73,7 +95,7 @@ function EditProfile() {
       return blog.userInfo.userId === user.uid
         ? updateDoc(doc(db, "blogs", blog.id), {
             ...blog,
-            userInfo: { ...blog.userInfo, userName, userAvatar }
+            userInfo: { ...blog.userInfo, userName, userAvatar },
           })
         : blog;
     });
@@ -91,14 +113,18 @@ function EditProfile() {
       followers: [],
       isEdit: false,
       following: [],
-      joinedOn: Timestamp.now()
+      joinedOn: Timestamp.now(),
     });
   };
   return (
     <div className="editProfile-container">
       <div className="action-container ">
+        <span style={{ color: "#E96479" }}>
+          * Complete your profile, by filling all the details!
+        </span>
         <div>
           <input
+            maxLength={30}
             className="userName-input"
             type="text"
             value={userName}
@@ -109,6 +135,7 @@ function EditProfile() {
         <div>
           <input
             className="location-input"
+            maxLength={25}
             type="text"
             placeholder="Location"
             value={userLocation}
@@ -117,6 +144,7 @@ function EditProfile() {
         </div>
         <div>
           <textarea
+            maxLength={100}
             className="status-input"
             type="text"
             placeholder="Status"
@@ -124,22 +152,46 @@ function EditProfile() {
             onChange={(e) => setUserStatus(e.target.value)}
           />
         </div>
-        <div>
-          <input
-            className="file-button"
-            id="file-input"
-            type="file"
-            onChange={(e) => {
-              fileHandler(e);
-            }}
-          />
-          <label for="file-input">
-            <MdPhotoSizeSelectActual className="gallery-icon" />
-          </label>
-        </div>
-
+        {imageFile !== null ? (
+          <>
+            <button
+              className="upload-btn"
+              onClick={() => {
+                handleUploadImage();
+              }}
+            >
+              Upload
+            </button>
+            <span
+              style={{ cursor: "pointer", marginTop: "0.45rem" }}
+              onClick={() => {
+                setImageFile(null);
+              }}
+            >
+              Cancel!
+            </span>
+          </>
+        ) : (
+          <div>
+            <input
+              className="file-button"
+              id="file-input"
+              type="file"
+              onChange={(e) => {
+                fileHandler(e);
+              }}
+            />
+            <label htmlFor="file-input">
+              <MdPhotoSizeSelectActual className="gallery-icon" />
+            </label>
+          </div>
+        )}
         <div className="image-container">
-          <img className="user-avatar" src={userAvatar} alt={"Avatar"} />
+          <img
+            className="user-avatar"
+            src={userAvatar === null ? "Assets/user.jpg" : userAvatar}
+            alt={"Avatar"}
+          />
         </div>
         {currUser ? (
           currUser.isEdit === false ? (
@@ -163,6 +215,9 @@ function EditProfile() {
               onClick={() => {
                 handleCreateProfile();
               }}
+              disabled={
+                userAvatar === "" || userLocation === "" || userStatus === ""
+              }
             >
               Create
             </button>

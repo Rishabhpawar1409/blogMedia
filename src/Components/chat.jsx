@@ -12,14 +12,13 @@ import { AiOutlineSearch } from "react-icons/ai";
 import Draggable from "react-draggable";
 
 import "./chat.css";
-
 import {
   getDocs,
   collection,
   doc,
   updateDoc,
   Timestamp,
-  arrayUnion
+  arrayUnion,
 } from "firebase/firestore";
 
 function Chat() {
@@ -27,7 +26,7 @@ function Chat() {
   const location = useLocation();
   const [tagg, setTagg] = useState({
     boolean: false,
-    message: ""
+    message: "",
   });
   const [input, setInput] = useState("");
   const [taggedInput, setTaggedInput] = useState("");
@@ -64,7 +63,7 @@ function Chat() {
       message.taggedText.taggedMesg.createdAt.seconds
     ].current.scrollIntoView({
       behavior: "smooth",
-      block: "center"
+      block: "center",
     });
   };
 
@@ -77,14 +76,14 @@ function Chat() {
       text: input,
       taggedText: {
         taggedMesg: tagg.message,
-        myText: taggedInput
+        myText: taggedInput,
       },
       blog: sharedBlog,
       taggedBlog: {
         blog: sharedBlog,
-        myText: input
+        myText: input,
       },
-      isSeen: false
+      isSeen: false,
     };
 
     const getChatData = async () => {
@@ -95,7 +94,7 @@ function Chat() {
     chats.map(async (connection) => {
       return connection.id === channelId.id
         ? await updateDoc(doc(db, "chats", connection.id), {
-            messages: arrayUnion(msg)
+            messages: arrayUnion(msg),
           })
         : "";
     });
@@ -160,12 +159,12 @@ function Chat() {
           ? (newChatData = [
               ...chat.messages.map((msg) => {
                 return { ...msg, isSeen: true };
-              })
+              }),
             ])
           : "";
       });
       return await updateDoc(doc(db, "chats", chatDoc.id), {
-        messages: newChatData
+        messages: newChatData,
       });
     };
     const chatData = chats.map((c) => {
@@ -225,7 +224,7 @@ function Chat() {
       createdAt: Timestamp.now(),
       text: input,
       blog: sharedBlog,
-      isSeen: false
+      isSeen: false,
     };
     participant.map((friend) => {
       const combineId =
@@ -233,7 +232,7 @@ function Chat() {
       return chats.map(async (checker) => {
         return checker.id === combineId
           ? await updateDoc(doc(db, "chats", checker.id), {
-              messages: arrayUnion(msg)
+              messages: arrayUnion(msg),
             })
           : "";
       });
@@ -268,13 +267,13 @@ function Chat() {
   const taggMe = (msg) => {
     setTagg({
       boolean: true,
-      message: msg
+      message: msg,
     });
   };
   const closeTagg = () => {
     setTagg({
       boolean: false,
-      message: ""
+      message: "",
     });
   };
 
@@ -304,7 +303,11 @@ function Chat() {
                       <div className="userImageAndName">
                         <img
                           className="userImage-container"
-                          src={person.userAvatar}
+                          src={
+                            person.userAvatar === null
+                              ? "Assets/user.jpg"
+                              : person.userAvatar
+                          }
                           alt="Avatar"
                         />
                         <p>{person.userName}</p>
@@ -361,7 +364,11 @@ function Chat() {
                       >
                         <img
                           className="userImage-container"
-                          src={user.userAvatar}
+                          src={
+                            user.userAvatar === null
+                              ? "Assets/user.jpg"
+                              : user.userAvatar
+                          }
                           alt="Avatar"
                         />
                         <p>{user.userName}</p>
@@ -395,7 +402,11 @@ function Chat() {
                               >
                                 <img
                                   className="userImage-container"
-                                  src={soloUser.userAvatar}
+                                  src={
+                                    soloUser.userAvatar === null
+                                      ? "Assets/user.jpg"
+                                      : soloUser.userAvatar
+                                  }
                                   alt="Avatar"
                                 />
                                 <p>{soloUser.userName}</p>
@@ -481,7 +492,11 @@ function Chat() {
               <div className="chatUserNav-container">
                 <img
                   className="userImage-container"
-                  src={selectedMate.userAvatar}
+                  src={
+                    selectedMate.userAvatar === null
+                      ? "Assets/user.jpg"
+                      : selectedMate.userAvatar
+                  }
                   alt="Avatar"
                 />
                 <p>{selectedMate.userName}</p>
@@ -525,9 +540,6 @@ function Chat() {
                                       {message.userChatId === user.uid ? (
                                         <>
                                           <div
-                                            // onDoubleClick={() => {
-                                            //   taggMe(message);
-                                            // }}
                                             className={
                                               message.userChatId === user.uid
                                                 ? "sender"
@@ -741,7 +753,7 @@ function Chat() {
                                               className="ReadMoreLink"
                                               to="/singleBlog"
                                               state={{
-                                                blog: message.blog.blog
+                                                blog: message.blog.blog,
                                               }}
                                             >
                                               <p
@@ -807,7 +819,7 @@ function Chat() {
                                               className="ReadMoreLink"
                                               to="/singleBlog"
                                               state={{
-                                                blog: message.blog.blog
+                                                blog: message.blog.blog,
                                               }}
                                             >
                                               <p
@@ -1005,7 +1017,9 @@ function Chat() {
               </div>
             ) : (
               <div className="message-container-text">
-                <p className="chat-text">Select a user to chat!</p>
+                <p className="chat-text">
+                  Select a user to chat! or follow someone to message them!
+                </p>
               </div>
             )}
             {selected === false ? (

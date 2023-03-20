@@ -261,9 +261,9 @@
   background-color: white;
 }
 .explore-btn:hover {
+  border: 1px solid black;
   background-color: #E96479;
   color: white;
-  border: 2px solid white;
 }
 .favourite {
   display: flex;
@@ -291,8 +291,7 @@
   cursor: pointer;
 }
 .text-conatiner {
-  display: flex;
-  justify-content: center;
+text-align: center;
   margin-top: 2rem;
 }
 .text {
