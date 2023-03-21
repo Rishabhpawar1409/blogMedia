@@ -74,6 +74,7 @@ const Home = () => {
       console.log("You hav'nt created the profile!");
       navigate("/editProfile");
     } else {
+      setFavBlogsList([...favBlogsList, blog.blogId]);
       users.map(async (currUser) => {
         return currUser.userId === user.uid
           ? await updateDoc(doc(db, "users", currUser.id), {
@@ -97,10 +98,14 @@ const Home = () => {
           id: doc.id,
         }));
         const blogsList = [];
-        temp_users.map((user) => {
-          user.userFavBlogs.map((blog) => {
-            blogsList.push(blog.blogId);
-          });
+        temp_users.map((checker) => {
+          if (user) {
+            if (user.uid === checker.userId) {
+              checker.userFavBlogs.map((blog) => {
+                blogsList.push(blog.blogId);
+              });
+            }
+          }
         });
         setFavBlogsList(blogsList);
       };
@@ -463,13 +468,7 @@ const Home = () => {
                           </p>
 
                           {favBlogsList.includes(blog.blogId) ? (
-                            <AiFillHeart
-                              key={user.userId}
-                              className="favBtn"
-                              onClick={() => {
-                                handleAddToFav(blog);
-                              }}
-                            />
+                            <AiFillHeart key={user.userId} className="favBtn" />
                           ) : (
                             <AiOutlineHeart
                               className="favBtn"

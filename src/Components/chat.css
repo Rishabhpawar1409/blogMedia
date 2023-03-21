@@ -43,13 +43,7 @@
   display: flex;
   align-items: center;
 }
-.chat-input {
-  height: 50px;
-  width: 100%;
-  border: none;
-  font-size: 15px;
-  border-radius: 0px 0px 10px 0px;
-}
+
 .search-input-btn-conatiner {
   background-color: cyan;
   height: 50px;
@@ -79,21 +73,7 @@
   font-size: 20px;
   color: #E96479;
 }
-.send-icon {
-  font-size: 25px;
-  color: white;
-}
-.sendBtn-container {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: #E96479;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 0.5rem;
-}
+
 .dots {
   margin-right: 0.5rem;
   cursor: pointer;
@@ -184,7 +164,7 @@
   height: 492px;
   width: 100%;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   text-align: center;
 }
 .message-container-text {
@@ -399,32 +379,67 @@
   text-align: left;
 }
 
-.input-container {
+.inputBtn-container {
   border-radius: 0px 0px 10px 0px;
   height: 50px;
   width: 100%;
-  background-color: white;
+  background-color: whitesmoke;
   display: flex;
   align-items: center;
 }
-.flexed-inputAndBtn {
+.chatInput-container{
+  flex: 3.5;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
+.chat-input {
+  padding-left: 0.25rem;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid black;
+  height: 75%;
+  width: 97%;
+}
+.chat-input:hover{
+  border: 2px solid #E96479;
+}
+.sendBtn{
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 5px ;
+  background-color: white;
+  cursor: pointer;
+  color: #E96479;
+  font-size: 15px;
+}
+.sendBtn:hover{
+  border: 2px solid #E96479;
+}
+.sendBtn-container {
+  flex: 0.5;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .inputTagg-container {
   border-radius: 10px 0px 10px 0px;
-  height: 90px;
+  height: 178px;
   width: 100%;
-  background-color: white;
+  background-color: whitesmoke;
   display: flex;
   flex-direction: column;
-  margin-bottom: 4.35rem;
 }
 .taggedMesg-conatiner {
+  border: 1px solid #E96479;
   border-left: 5px solid #E96479;
   margin: 0.5rem;
   border-radius: 7px;
   background-color: whitesmoke;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
   padding-top: 0.25rem;
 }
 .authorOfMessage {

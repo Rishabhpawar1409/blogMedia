@@ -5,7 +5,6 @@ import { db } from "../firebase";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BsArrowRight } from "react-icons/bs";
 import { BiCheckDouble } from "react-icons/bi";
-import { IoIosPaperPlane } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { BsArrowLeft } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -49,7 +48,7 @@ function Chat() {
   const handleChange = (e) => {
     setInput(e.target.value);
   };
-  const handleaggedChange = (e) => {
+  const handleTaggedChange = (e) => {
     setTaggedInput(e.target.value);
   };
 
@@ -58,49 +57,91 @@ function Chat() {
     setTimeout(() => {
       setTaggedMsg("");
     }, 2000);
-
-    refs[
-      message.taggedText.taggedMesg.createdAt.seconds
-    ].current.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
+    refs &&
+      refs[
+        message.taggedText.taggedMesg.createdAt.seconds
+      ].current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
   };
 
-  const handleSend = async () => {
-    console.log("messages", messages);
-    closeTagg();
-    const msg = {
-      userChatId: user.uid,
-      createdAt: Timestamp.now(),
-      text: input,
-      taggedText: {
-        taggedMesg: tagg.message,
-        myText: taggedInput,
-      },
-      blog: sharedBlog,
-      taggedBlog: {
+  const handleSend = async (e) => {
+    console.log("state:", refs);
+    e.preventDefault();
+    if (input !== "") {
+      closeTagg();
+      const msg = {
+        userChatId: user.uid,
+        createdAt: Timestamp.now(),
+        text: input,
+        taggedText: {
+          taggedMesg: tagg.message,
+          myText: taggedInput,
+        },
         blog: sharedBlog,
-        myText: input,
-      },
-      isSeen: false,
-    };
+        taggedBlog: {
+          blog: sharedBlog,
+          myText: input,
+        },
+        isSeen: false,
+      };
 
-    const getChatData = async () => {
-      const get = await getDocs(collection(db, "chats"));
-      setChats(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getChatData();
-    chats.map(async (connection) => {
-      return connection.id === channelId.id
-        ? await updateDoc(doc(db, "chats", connection.id), {
-            messages: arrayUnion(msg),
-          })
-        : "";
-    });
+      const getChatData = async () => {
+        const get = await getDocs(collection(db, "chats"));
+        setChats(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      };
+      getChatData();
+      chats.map(async (connection) => {
+        return connection.id === channelId.id
+          ? await updateDoc(doc(db, "chats", connection.id), {
+              messages: arrayUnion(msg),
+            })
+          : "";
+      });
 
-    setInput("");
-    setTaggedInput("");
+      setInput("");
+      setTaggedInput("");
+    }
+  };
+
+  // For tagged messages.
+  const handleTaggSend = async (e) => {
+    e.preventDefault();
+    if (taggedInput !== "") {
+      closeTagg();
+      const msg = {
+        userChatId: user.uid,
+        createdAt: Timestamp.now(),
+        text: input,
+        taggedText: {
+          taggedMesg: tagg.message,
+          myText: taggedInput,
+        },
+        blog: sharedBlog,
+        taggedBlog: {
+          blog: sharedBlog,
+          myText: input,
+        },
+        isSeen: false,
+      };
+
+      const getChatData = async () => {
+        const get = await getDocs(collection(db, "chats"));
+        setChats(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      };
+      getChatData();
+      chats.map(async (connection) => {
+        return connection.id === channelId.id
+          ? await updateDoc(doc(db, "chats", connection.id), {
+              messages: arrayUnion(msg),
+            })
+          : "";
+      });
+
+      setInput("");
+      setTaggedInput("");
+    }
   };
 
   useEffect(() => {
@@ -132,19 +173,32 @@ function Chat() {
 
   const handleSelect = async (soloUser, chatDoc) => {
     // setting messages state on selecting the chatId.
+    // chats &&
+    //   chats.map((chat) => {
+    //     return chat.id === channelId.id ? setMessages(chat.messages) : "";
+    //   });
+
+    // const refsOfMessages =
+    //   messages &&
+    //   messages.reduce((acc, value) => {
+    //     acc[value.createdAt.seconds] = createRef();
+    //     return acc;
+    //   }, {});
+    // setRefs(refsOfMessages);
+
+    let temp_messages;
     chats &&
       chats.map((chat) => {
-        return chat.id === channelId.id ? setMessages(chat.messages) : "";
+        return chat.id === chatDoc.id ? (temp_messages = chat.messages) : "";
       });
 
-    const refs =
-      messages &&
-      messages.reduce((acc, value) => {
+    const refsOfMessages =
+      temp_messages &&
+      temp_messages.reduce((acc, value) => {
         acc[value.createdAt.seconds] = createRef();
         return acc;
       }, {});
-
-    setRefs(refs);
+    setRefs(refsOfMessages);
 
     closeTagg();
     const getChatData = async () => {
@@ -208,7 +262,7 @@ function Chat() {
     setSearch("");
   };
 
-  const ref = useRef();
+  const ref = useRef(null);
   useEffect(() => {
     return ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
@@ -1025,29 +1079,30 @@ function Chat() {
             {selected === false ? (
               ""
             ) : tagg.boolean === false ? (
-              <div className="input-container">
-                <input
-                  className="chat-input"
-                  value={input}
-                  type="text"
-                  placeholder="Message..."
-                  onChange={(e) => {
-                    handleChange(e);
-                  }}
-                />
-                {input.length ? (
-                  <div className="sendBtn-container">
-                    <IoIosPaperPlane
-                      className="send-icon"
-                      onClick={() => {
-                        handleSend();
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
+              <form
+                className="inputBtn-container"
+                onSubmit={(e) => {
+                  handleSend(e);
+                }}
+              >
+                <div className="chatInput-container">
+                  <input
+                    className="chat-input"
+                    value={input}
+                    type="text"
+                    placeholder="Message..."
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                  />
+                </div>
+
+                <div className="sendBtn-container">
+                  <button type="submit" className="sendBtn">
+                    Send
+                  </button>
+                </div>
+              </form>
             ) : (
               <div className="inputTagg-container">
                 <div className="taggedMesg-conatiner">
@@ -1069,31 +1124,32 @@ function Chat() {
                     />
                   </div>
 
-                  <p>{tagg.message.text}</p>
+                  <p style={{ fontSize: "15px" }}>{tagg.message.text}</p>
                 </div>
-                <span className="flexed-inputAndBtn">
-                  <input
-                    className="chat-input"
-                    value={taggedInput}
-                    type="text"
-                    placeholder="Message..."
-                    onChange={(e) => {
-                      handleaggedChange(e);
-                    }}
-                  />
-                  {taggedInput.length ? (
-                    <div className="sendBtn-container">
-                      <IoIosPaperPlane
-                        className="send-icon"
-                        onClick={() => {
-                          handleSend();
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </span>
+                <form
+                  className="inputBtn-container"
+                  onSubmit={(e) => {
+                    handleTaggSend(e);
+                  }}
+                >
+                  <div className="chatInput-container">
+                    <input
+                      className="chat-input"
+                      value={taggedInput}
+                      type="text"
+                      placeholder="Message..."
+                      onChange={(e) => {
+                        handleTaggedChange(e);
+                      }}
+                    />
+                  </div>
+
+                  <div className="sendBtn-container">
+                    <button type="submit" className="sendBtn">
+                      Send
+                    </button>
+                  </div>
+                </form>
               </div>
             )}
           </div>
