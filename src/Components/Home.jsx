@@ -49,10 +49,14 @@ const Home = () => {
       setUsers(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       const temp_users = get.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       const blogsList = [];
-      temp_users.map((user) => {
-        user.userFavBlogs.map((blog) => {
-          blogsList.push(blog.blogId);
-        });
+      temp_users.map((checker) => {
+        if (user) {
+          if (user.uid === checker.userId) {
+            checker.userFavBlogs.map((blog) => {
+              blogsList.push(blog.blogId);
+            });
+          }
+        }
       });
       setFavBlogsList(blogsList);
     };
@@ -60,34 +64,48 @@ const Home = () => {
   }, []);
 
   const handleAddToFav = (blog) => {
-    users.map(async (currUser) => {
-      return currUser.userId === user.uid
-        ? await updateDoc(doc(db, "users", currUser.id), {
-            userAvatar: currUser.userAvatar,
-            userName: currUser.userName,
-            userBlogs: [...currUser.userBlogs],
-            userEmail: currUser.userEmail,
-            userCountry: currUser.userCountry,
-            userStatus: currUser.userStatus,
-            userFavBlogs: [...currUser.userFavBlogs, blog],
-            userId: currUser.userId,
-          })
-        : "";
+    let temp_boolean = false;
+    users.map((checker) => {
+      if (checker.userId === user.uid) {
+        temp_boolean = true;
+      }
     });
-
-    const getUsersData = async () => {
-      const get = await getDocs(collection(db, "users"));
-      setUsers(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      const temp_users = get.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      const blogsList = [];
-      temp_users.map((user) => {
-        user.userFavBlogs.map((blog) => {
-          blogsList.push(blog.blogId);
-        });
+    if (temp_boolean === false) {
+      console.log("You hav'nt created the profile!");
+      navigate("/editProfile");
+    } else {
+      users.map(async (currUser) => {
+        return currUser.userId === user.uid
+          ? await updateDoc(doc(db, "users", currUser.id), {
+              userAvatar: currUser.userAvatar,
+              userName: currUser.userName,
+              userBlogs: [...currUser.userBlogs],
+              userEmail: currUser.userEmail,
+              userCountry: currUser.userCountry,
+              userStatus: currUser.userStatus,
+              userFavBlogs: [...currUser.userFavBlogs, blog],
+              userId: currUser.userId,
+            })
+          : "";
       });
-      setFavBlogsList(blogsList);
-    };
-    getUsersData();
+
+      const getUsersData = async () => {
+        const get = await getDocs(collection(db, "users"));
+        setUsers(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        const temp_users = get.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        const blogsList = [];
+        temp_users.map((user) => {
+          user.userFavBlogs.map((blog) => {
+            blogsList.push(blog.blogId);
+          });
+        });
+        setFavBlogsList(blogsList);
+      };
+      getUsersData();
+    }
   };
 
   const letUsersLike = (blog) => {
@@ -279,23 +297,17 @@ const Home = () => {
                               {blog.userInfo.userEmail}
                             </Link>
                           </p>
-                          {users &&
-                            users.map((user) => {
-                              return user.userFavBlogs.includes() ? (
-                                <AiFillHeart
-                                  key={user.userId}
-                                  className="favBtn"
-                                />
-                              ) : (
-                                <AiOutlineHeart
-                                  className="favBtn"
-                                  key={user.userId}
-                                  onClick={() => {
-                                    handleAddToFav(blog);
-                                  }}
-                                />
-                              );
-                            })}
+                          {favBlogsList.includes(blog.blogId) ? (
+                            <AiFillHeart key={user.userId} className="favBtn" />
+                          ) : (
+                            <AiOutlineHeart
+                              className="favBtn"
+                              key={user.userId}
+                              onClick={() => {
+                                handleAddToFav(blog);
+                              }}
+                            />
+                          )}
                         </>
                       </div>
                       <div className="title">
@@ -451,7 +463,13 @@ const Home = () => {
                           </p>
 
                           {favBlogsList.includes(blog.blogId) ? (
-                            <AiFillHeart key={user.userId} className="favBtn" />
+                            <AiFillHeart
+                              key={user.userId}
+                              className="favBtn"
+                              onClick={() => {
+                                handleAddToFav(blog);
+                              }}
+                            />
                           ) : (
                             <AiOutlineHeart
                               className="favBtn"
