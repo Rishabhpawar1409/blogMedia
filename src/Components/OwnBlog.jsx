@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import data from "../Context/data";
 import "./ownBlog.css";
-import { Link } from "react-router-dom";
-import { FavroiteState } from "../Context/Context";
-import { GrNext } from "react-icons/gr";
-import { GrPrevious } from "react-icons/gr";
 import uuid from "react-uuid";
 import { useUserAuth } from "../Context/userAuthContext";
 import { db } from "../firebase";
@@ -19,16 +18,21 @@ import {
 
 function OwnBlog() {
   const id = uuid();
-
+  const randomTheme = data[Math.floor(Math.random() * data.length)];
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [index, setIndex] = useState(0);
   const [newimage, setnewImage] = useState("Assets/new6.png");
   const [edit, setEdit] = useState(false);
   const [currBlogs, setCurrBlogs] = useState("");
   const [users, setUsers] = useState();
   const { user } = useUserAuth();
   const [editBlog, setEditBlog] = useState("");
+  const [selectedTheme, setSelectedTheme] = useState({
+    id: randomTheme.id,
+    image: randomTheme.image,
+  });
+  const [value, setValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     getUserData();
@@ -74,24 +78,6 @@ function OwnBlog() {
   const titleText = title.length === 0;
   const contentText = content.length < 50;
 
-  const slideLeft = () => {
-    const nextIndex = index - 1;
-    if (nextIndex < 0) {
-      setIndex(data.length - 1);
-    } else {
-      setIndex(nextIndex);
-    }
-  };
-
-  const slideRight = () => {
-    setIndex((index + 1) % data.length);
-  };
-
-  const handleSelect = () => {
-    alert("Confirm background!!");
-    setnewImage(data[index].image);
-  };
-
   const handleSave = async () => {
     await updateDoc(doc(db, "blogs", editBlog.id), {
       ...editBlog,
@@ -118,6 +104,7 @@ function OwnBlog() {
   };
 
   const handleCreateBlog = async () => {
+    console.log("value:", value);
     let avatar;
     users.map((checker) => {
       if (checker.userId === user.uid) {
@@ -132,9 +119,11 @@ function OwnBlog() {
     });
 
     await addDoc(collection(db, "blogs"), {
-      title,
+      // title,
+      title: inputValue,
       blogId: id,
-      content,
+      // content,
+      content: value,
       Likes: [],
       comments: [],
       themeImg: newimage,
@@ -155,8 +144,9 @@ function OwnBlog() {
             userBlogs: [
               ...singleUser.userBlogs,
               {
-                title,
-                content,
+                // title,
+                title: inputValue,
+                content: value,
                 blogId: id,
                 Likes: [],
                 comments: [],
@@ -172,59 +162,78 @@ function OwnBlog() {
         : "";
     });
   };
-  return (
-    <>
-      <div className="imageSlider-container">
-        <div className="imageSlider">
-          <GrPrevious className="previous-image" onClick={slideLeft} />
-          <GrNext className="next-image" onClick={slideRight} />
-          <p className="text-background">Choose background for your blog (:</p>
-          <img
-            className="imageSlider-image"
-            src={data[index].image}
-            alt={data[index].title}
-          />
-        </div>
-      </div>
-      <div className="apply-background-container">
-        <button className="apply-background" onClick={handleSelect}>
-          Select
-        </button>
-      </div>
 
-      <div className="ownBlogInput-container">
+  const handleSelectImage = (theme) => {
+    setSelectedTheme({ id: theme.id, image: theme.image });
+  };
+  return (
+    <div className="ownBlog-window">
+      <div className="first-container">
+        <div className="theme-container">
+          {data.length !== 0 &&
+            data.map((theme, index) => {
+              return selectedTheme.id === theme.id ? (
+                // Theme that is selected!
+                <div
+                  className="theme"
+                  key={index}
+                  style={index % 2 !== 0 ? { marginRight: "5px" } : {}}
+                >
+                  <div className="first-child-container">
+                    <img
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        borderTopLeftRadius: "5px",
+                        borderTopRightRadius: "5px",
+                      }}
+                      src={theme.image}
+                      alt={`theme-${index}`}
+                      onClick={() => {
+                        handleSelectImage(theme);
+                      }}
+                    />
+                  </div>
+                  <div className="showSelected">
+                    <span>Selected!</span>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className="theme"
+                  key={index}
+                  style={index % 2 !== 0 ? { marginRight: "5px" } : {}}
+                >
+                  <img
+                    className="theme-image"
+                    src={theme.image}
+                    alt={`theme-${index}`}
+                    onClick={() => {
+                      handleSelectImage(theme);
+                    }}
+                  />
+                </div>
+              );
+            })}
+          <div className="theme">6</div>
+          <div className="theme">7</div>
+        </div>
         <div>
-          <div className="title-container">
-            <p className="myTitle">Title :</p>
-            <input
-              type="text"
-              value={title}
-              style={{
-                backgroundImage: `url(${newimage})`,
-              }}
-              className="title-input"
-              placeholder="Give title to your blog"
-              onChange={handleTitle}
-            />
-          </div>
-          <div className="content-container">
-            <textarea
-              className="textArea-input"
-              value={content}
-              placeholder="word limit(35-100)"
-              maxLength="1000"
-              style={{
-                backgroundImage: `url(${newimage})`,
-              }}
-              onChange={handleContent}
-            ></textarea>
-          </div>
+          <p
+            style={{
+              color: "#E96479",
+              marginTop: "0.15rem",
+              fontWeight: "bold",
+            }}
+          >
+            Choose theme!
+          </p>
           {edit === true ? (
             <div className="createBtn-container">
               <Link to="/">
                 <button
                   className="createBlog"
-                  disabled={titleText || contentText}
+                  // disabled={titleText || contentText}
                   onClick={() => {
                     handleSave();
                   }}
@@ -237,7 +246,7 @@ function OwnBlog() {
             <div className="createBtn-container">
               <Link to="/">
                 <button
-                  disabled={titleText || contentText}
+                  // disabled={titleText || contentText}
                   className="createBlog"
                   onClick={() => {
                     handleCreateBlog();
@@ -250,7 +259,113 @@ function OwnBlog() {
           )}
         </div>
       </div>
-    </>
+      <div className="second-container">
+        <div className="selected-theme-container">
+          <div className="selctedTheme-container">
+            <img
+              className="theme-image"
+              src={selectedTheme.image}
+              alt="selected image."
+              style={{ cursor: "default" }}
+            />
+          </div>
+        </div>
+        <div className="text-editor-container">
+          <ReactQuill
+            theme="snow"
+            placeholder="Give title to your blog"
+            value={inputValue}
+            onChange={setInputValue}
+            className="editor-box-forTitle"
+          />
+          <ReactQuill
+            theme="snow"
+            placeholder="Enter text here..."
+            value={value}
+            onChange={setValue}
+            className="editor-box-forContent"
+          />
+        </div>
+      </div>
+    </div>
+    // <>
+    //   <div className="imageSlider-container">
+    //     <div className="imageSlider">
+    //       <GrPrevious className="previous-image" onClick={slideLeft} />
+    //       <GrNext className="next-image" onClick={slideRight} />
+    //       <p className="text-background">Choose background for your blog (:</p>
+    //       <img
+    //         className="imageSlider-image"
+    //         src={data[index].image}
+    //         alt={data[index].title}
+    //       />
+    //     </div>
+    //   </div>
+    //   <div className="apply-background-container">
+    //     <button className="apply-background" onClick={handleSelect}>
+    //       Select
+    //     </button>
+    //   </div>
+
+    //   <div className="ownBlogInput-container">
+    //     <div>
+    //       <div className="title-container">
+    //         <p className="myTitle">Title :</p>
+    //         <input
+    //           type="text"
+    //           value={title}
+    //           style={{
+    //             backgroundImage: `url(${newimage})`,
+    //           }}
+    //           className="title-input"
+    //           placeholder="Give title to your blog"
+    //           onChange={handleTitle}
+    //         />
+    //       </div>
+    //       <div className="content-container">
+    //         <textarea
+    //           className="textArea-input"
+    //           value={content}
+    //           placeholder="word limit(35-100)"
+    //           maxLength="1000"
+    //           style={{
+    //             backgroundImage: `url(${newimage})`,
+    //           }}
+    //           onChange={handleContent}
+    //         ></textarea>
+    //       </div>
+    //       {edit === true ? (
+    //         <div className="createBtn-container">
+    //           <Link to="/">
+    //             <button
+    //               className="createBlog"
+    //               disabled={titleText || contentText}
+    //               onClick={() => {
+    //                 handleSave();
+    //               }}
+    //             >
+    //               Save
+    //             </button>
+    //           </Link>
+    //         </div>
+    //       ) : (
+    //         <div className="createBtn-container">
+    //           <Link to="/">
+    //             <button
+    //               disabled={titleText || contentText}
+    //               className="createBlog"
+    //               onClick={() => {
+    //                 handleCreateBlog();
+    //               }}
+    //             >
+    //               Create
+    //             </button>
+    //           </Link>
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
+    // </>
   );
 }
 export default OwnBlog;

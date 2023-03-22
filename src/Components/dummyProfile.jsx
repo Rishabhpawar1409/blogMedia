@@ -1,7 +1,6 @@
 import React from "react";
 import { MdLocationOn } from "react-icons/md";
 import { BsCalendarEvent } from "react-icons/bs";
-import { GiCoffeeCup } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { useUserAuth } from "../Context/userAuthContext";
 

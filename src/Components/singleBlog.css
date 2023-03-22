@@ -69,6 +69,7 @@
   border-radius: 20px;
   box-shadow: 5px 5px 8px 1px #aaaaaa;
   overflow-wrap: break-word;
+  overflow-y: auto;
 }
 .blog-image {
   width: 100%;
@@ -84,7 +85,7 @@
 .blog-content {
   position: relative;
   width: 400px;
-  height: 300px;
+  height: 400px;
 }
 .likes {
   display: flex;

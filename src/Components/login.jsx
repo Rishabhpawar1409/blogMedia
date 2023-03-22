@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Alert } from "react-bootstrap";
 import "./login&signUp.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../Context/userAuthContext";
@@ -44,9 +43,9 @@ function Login() {
       <div className="login">
         <h2 className="header-1">blogMedia</h2>
         {error && (
-          <Alert className="error" variant="danger">
+          <span style={{ color: "red", fontSize: "15px", marginLeft: "1rem" }}>
             {error}
-          </Alert>
+          </span>
         )}
         <input
           type="email"

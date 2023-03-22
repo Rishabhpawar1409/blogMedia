@@ -8,7 +8,6 @@ import SignUp from "./signUp";
 import ProtectedRoute from "./protectedRoute";
 import Navbar from "./Navbar";
 import Home from "./Home";
-// import Favourite from "./Favourite";
 import OwnBlog from "./OwnBlog";
 import SingleBlog from "./SingleBlog";
 import Profile from "./profile";
@@ -104,7 +103,7 @@ export default function App() {
         <Route exact path="/chat" element={<Chat />} />
         <Route
           exact
-          path="/yourBlog"
+          path="/create-blog"
           element={
             <ProtectedRoute>
               <OwnBlog />

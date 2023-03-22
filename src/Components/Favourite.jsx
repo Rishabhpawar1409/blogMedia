@@ -8,8 +8,6 @@ import { db } from "../firebase";
 import { getDocs, collection, doc, updateDoc } from "firebase/firestore";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
-// import { left } from "@popperjs/core";
-
 function Favourite() {
   const { user } = useUserAuth();
 
@@ -56,50 +54,53 @@ function Favourite() {
         <div className="blogs-container" ref={animationParent}>
           {favBlogs.map((blog) => {
             return (
-              <>
-                <div className="blog-container" key={blog.id}>
-                  <img
-                    className="image"
-                    src={blog.themeImg}
-                    alt="background of a blog"
-                  />
-                  <div className="userName-container">
-                    <div className="userAvatar-container">
-                      <img
-                        className="userAvatar"
-                        src={
-                          blog.userInfo.userAvatar === null
-                            ? "Assets/user.jpg"
-                            : blog.userInfo.userAvatar
-                        }
-                        alt="avatar"
-                      />
-                    </div>
-                    <p className="userName">{blog.userInfo.userName}</p>
+              <div className="blog-container" key={blog.id}>
+                <img
+                  className="image"
+                  src={blog.themeImg}
+                  alt="background of a blog"
+                />
+                <div className="userName-container">
+                  <div className="userAvatar-container">
+                    <img
+                      className="userAvatar"
+                      src={
+                        blog.userInfo.userAvatar === null
+                          ? "Assets/user.jpg"
+                          : blog.userInfo.userAvatar
+                      }
+                      alt="avatar"
+                    />
                   </div>
-                  <div className="title">
-                    <p>{blog.title}</p>
-                  </div>
-                  <div className="content">
-                    <p className="content-text">{blog.content}</p>
-                  </div>
-                  <div>
-                    <Link
-                      className="ReadMoreLink"
-                      to="/singleBlog"
-                      state={{ blog: blog }}
-                    >
-                      <p className="read-text">read more..</p>
-                    </Link>
-                  </div>
-                  <ImBin
-                    className="removeBtn"
-                    onClick={() => {
-                      handleDeleteBlog(blog);
-                    }}
+                  <p className="userName">{blog.userInfo.userName}</p>
+                </div>
+                <div className="title">
+                  {/* <p>{blog.title}</p> */}
+                  <p dangerouslySetInnerHTML={{ __html: blog.title }} />
+                </div>
+                <div className="content">
+                  {/* <p className="content-text">{blog.content}</p> */}
+                  <p
+                    className="content-text"
+                    dangerouslySetInnerHTML={{ __html: blog.content }}
                   />
                 </div>
-              </>
+                <div>
+                  <Link
+                    className="ReadMoreLink"
+                    to="/singleBlog"
+                    state={{ blog: blog }}
+                  >
+                    <p className="read-text">read more..</p>
+                  </Link>
+                </div>
+                <ImBin
+                  className="removeBtn"
+                  onClick={() => {
+                    handleDeleteBlog(blog);
+                  }}
+                />
+              </div>
             );
           })}
         </div>

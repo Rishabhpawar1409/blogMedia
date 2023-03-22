@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { UserAuthContextProvider } from "./Context/userAuthContext";
@@ -11,12 +10,10 @@ const root = createRoot(rootElement);
 
 root.render(
   <BrowserRouter>
-    <StrictMode>
-      <UserAuthContextProvider>
-        <Context>
-          <App />
-        </Context>
-      </UserAuthContextProvider>
-    </StrictMode>
+    <UserAuthContextProvider>
+      <Context>
+        <App />
+      </Context>
+    </UserAuthContextProvider>
   </BrowserRouter>
 );

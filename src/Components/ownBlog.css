@@ -46,8 +46,7 @@
 }
 
 .createBtn-container {
-  margin-left: 3rem;
-  margin-top: 1rem;
+  margin-top: 0.15rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,4 +124,102 @@
 .apply-background-container {
   display: flex;
   justify-content: center;
+}
+/* /New/ */
+.ownBlog-window{
+  height: 100vh;
+  background-color: whitesmoke;
+  display: flex;
+}
+.first-container{
+  flex: 1.25;
+  /* background-color: orange; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.theme-container{
+  padding: 5px;
+  margin-top: 0.5rem;
+  height: 85%;
+  width: 80%;
+  background-color: #E96479;
+  border-radius: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(2, 50%);
+}
+.theme{
+  background-color: yellow;
+  height: 173.25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.theme-image{
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.first-child-container{
+  height:80%;
+  width:100%
+}
+.showSelected{
+  height: 20%;
+  background-color: #E96479; 
+  border-radius: 0 0 5px 5px;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 15px;
+}
+
+
+.second-container{
+flex: 2.75;
+/* background-color: blue; */
+display: flex;
+flex-direction: column;
+}
+.selected-theme-container{
+  flex: 1;
+  height: 50px;
+  /* background-color: yellowgreen; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.selctedTheme-container{
+  height: 90%;
+  width: 70%;
+  background-color: #E96479;
+  border-radius: 5px;
+  text-align: center;
+  border: 1px solid silver;
+}
+.text-editor-container{
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.editor-box-forTitle{
+
+  margin-top: 1rem;
+  height: 50px;
+  width:750px;
+  overflow-wrap: break-word; 
+  
+}
+.editor-box-forContent{
+  margin-top: 3.5rem;
+  /* height: 375px; */
+  height: 275px;
+  width:750px;
+  overflow-wrap: break-word;
 }

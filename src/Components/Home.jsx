@@ -198,7 +198,8 @@ const Home = () => {
   const handleChange = (e) => {
     setInput(e.target.value);
   };
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     setInput("");
     return blogData.map((blog) => {
       return blog.title.includes(input) ? setSearchResults([blog.blogId]) : "";
@@ -213,7 +214,7 @@ const Home = () => {
       }
     });
     if (temp_variable === true) {
-      navigate("/yourBlog");
+      navigate("/create-blog");
     } else {
       navigate("/editProfile");
     }
@@ -237,7 +238,12 @@ const Home = () => {
           )}
         </div>
 
-        <div className="SearchInputBtn-container">
+        <form
+          className="SearchInputBtn-container"
+          onSubmit={(e) => {
+            handleSearch(e);
+          }}
+        >
           <input
             className="searchBlog"
             type="text"
@@ -251,25 +257,25 @@ const Home = () => {
             {input.length ? (
               <AiOutlineSearch
                 className="searchBtn"
-                onClick={() => {
-                  handleSearch();
+                onClick={(e) => {
+                  handleSearch(e);
                 }}
               />
             ) : (
               ""
             )}
           </div>
-        </div>
+        </form>
       </div>
 
       {searchResults.length ? (
         <div>
           {searchResults &&
-            searchResults.map((result) => {
-              return blogData.map((blog) => {
+            searchResults.map((result, index) => {
+              return blogData.map((blog, blogIndex) => {
                 return blog.blogId === result ? (
-                  <div className="searchBlog-window">
-                    <div className="searchBlog-container">
+                  <div className="searchBlog-window" key={index}>
+                    <div className="searchBlog-container" key={blogIndex}>
                       <img
                         className="image"
                         src={blog.themeImg}
@@ -334,7 +340,7 @@ const Home = () => {
                         blog.userInfo.userId === user.uid ? (
                           <>
                             <div className="editBtn-container">
-                              <Link to="/yourBlog" state={{ blog: blog }}>
+                              <Link to="/create-blog" state={{ blog: blog }}>
                                 <FaEdit
                                   color="black"
                                   className="editBtn"
@@ -430,159 +436,162 @@ const Home = () => {
           {blogData
             ? blogData.map((blog) => {
                 return (
-                  <>
-                    <div className="blog-container" key={blog.id}>
-                      <img
-                        className="image"
-                        src={blog.themeImg}
-                        alt={blog.title}
-                      />
-                      <div className="userName-container">
-                        <>
-                          <div className="userAvatar-container">
-                            <img
-                              className="userAvatar"
-                              src={
-                                blog.userInfo.userAvatar === null
-                                  ? "Assets/user.jpg"
-                                  : blog.userInfo.userAvatar
-                              }
-                              alt="avatar"
-                            />
-                          </div>
-                          <p className="userName">
-                            <Link
-                              to={{ pathname: "/profile", hash: "#singleUser" }}
-                              style={{ textDecoration: "none", color: "black" }}
-                              state={{
-                                profileUser: {
-                                  userId: blog.userInfo.userId,
-                                  userEmail: blog.userInfo.userEmail,
-                                },
-                              }}
-                            >
-                              {blog.userInfo.userName
-                                ? blog.userInfo.userName
-                                : blog.userInfo.userEmail}
-                            </Link>
-                          </p>
+                  <div className="blog-container" key={blog.id}>
+                    <img
+                      className="image"
+                      src={blog.themeImg}
+                      alt="blog theme"
+                    />
+                    <div className="userName-container">
+                      <>
+                        <div className="userAvatar-container">
+                          <img
+                            className="userAvatar"
+                            src={
+                              blog.userInfo.userAvatar === null
+                                ? "Assets/user.jpg"
+                                : blog.userInfo.userAvatar
+                            }
+                            alt="avatar"
+                          />
+                        </div>
+                        <p className="userName">
+                          <Link
+                            to={{ pathname: "/profile", hash: "#singleUser" }}
+                            style={{ textDecoration: "none", color: "black" }}
+                            state={{
+                              profileUser: {
+                                userId: blog.userInfo.userId,
+                                userEmail: blog.userInfo.userEmail,
+                              },
+                            }}
+                          >
+                            {blog.userInfo.userName
+                              ? blog.userInfo.userName
+                              : blog.userInfo.userEmail}
+                          </Link>
+                        </p>
 
-                          {favBlogsList.includes(blog.blogId) ? (
-                            <AiFillHeart key={user.userId} className="favBtn" />
-                          ) : (
-                            <AiOutlineHeart
-                              className="favBtn"
-                              key={user.userId}
-                              onClick={() => {
-                                handleAddToFav(blog);
-                              }}
-                            />
-                          )}
-                        </>
-                      </div>
-                      <div className="title">
-                        <p>{blog.title}</p>
-                      </div>
-                      <div className="content">
-                        <p className="content-text">{blog.content}</p>
-                      </div>
-                      <div>
-                        <Link
-                          className="ReadMoreLink"
-                          to="/singleBlog"
-                          state={{ blog: blog }}
-                        >
-                          <p className="read-text">read more..</p>
-                        </Link>
-                      </div>
-
-                      {user ? (
-                        blog.userInfo.userId === user.uid ? (
-                          <>
-                            <div className="editBtn-container">
-                              <Link to="/yourBlog" state={{ blog: blog }}>
-                                <FaEdit
-                                  color="black"
-                                  className="editBtn"
-                                  onClick={() => {
-                                    handleEdit(blog);
-                                  }}
-                                >
-                                  Edit
-                                </FaEdit>
-                              </Link>
-                            </div>
-
-                            <ImBin
-                              onClick={() => {
-                                handleDelete(blog);
-                              }}
-                              className="removeBtn-main"
-                            />
-                          </>
+                        {favBlogsList.includes(blog.blogId) ? (
+                          <AiFillHeart key={user.userId} className="favBtn" />
                         ) : (
-                          ""
-                        )
+                          <AiOutlineHeart
+                            className="favBtn"
+                            key={user.userId}
+                            onClick={() => {
+                              handleAddToFav(blog);
+                            }}
+                          />
+                        )}
+                      </>
+                    </div>
+                    <div className="title">
+                      {/* <p>{blog.title}</p> */}
+                      <p dangerouslySetInnerHTML={{ __html: blog.title }} />
+                    </div>
+                    <div className="content">
+                      {/* <p className="content-text">{blog.content}</p> */}
+                      <p
+                        className="content-text"
+                        dangerouslySetInnerHTML={{ __html: blog.content }}
+                      />
+                    </div>
+                    <div>
+                      <Link
+                        className="ReadMoreLink"
+                        to="/singleBlog"
+                        state={{ blog: blog }}
+                      >
+                        <p className="read-text">read more..</p>
+                      </Link>
+                    </div>
+
+                    {user ? (
+                      blog.userInfo.userId === user.uid ? (
+                        <>
+                          <div className="editBtn-container">
+                            <Link to="/create-blog" state={{ blog: blog }}>
+                              <FaEdit
+                                color="black"
+                                className="editBtn"
+                                onClick={() => {
+                                  handleEdit(blog);
+                                }}
+                              >
+                                Edit
+                              </FaEdit>
+                            </Link>
+                          </div>
+
+                          <ImBin
+                            onClick={() => {
+                              handleDelete(blog);
+                            }}
+                            className="removeBtn-main"
+                          />
+                        </>
                       ) : (
                         ""
-                      )}
-                      {users &&
-                        users.map((soloUser) => {
-                          return chats
-                            ? chats.map((chatDoc) => {
-                                return (soloUser.userId > user.uid
-                                  ? soloUser.userId + user.uid
-                                  : user.uid + soloUser.userId) ===
-                                  chatDoc.id ? (
-                                  <Link
-                                    to={{
-                                      pathname: "/chat",
-                                      hash: "#shareBlog",
-                                    }}
-                                    hash="#shareBlog"
-                                    state={{ blog: { blog } }}
-                                  >
-                                    <TbSend className="shareBtn" />
-                                  </Link>
-                                ) : (
-                                  ""
-                                );
-                              })
-                            : "";
-                        })}
+                      )
+                    ) : (
+                      ""
+                    )}
+                    {users &&
+                      users.map((soloUser) => {
+                        return chats
+                          ? chats.map((chatDoc) => {
+                              return (soloUser.userId > user.uid
+                                ? soloUser.userId + user.uid
+                                : user.uid + soloUser.userId) === chatDoc.id ? (
+                                <Link
+                                  key={soloUser.userId}
+                                  to={{
+                                    pathname: "/chat",
+                                    hash: "#shareBlog",
+                                  }}
+                                  hash="#shareBlog"
+                                  state={{ blog: { blog } }}
+                                >
+                                  <TbSend className="shareBtn" />
+                                </Link>
+                              ) : (
+                                ""
+                              );
+                            })
+                          : "";
+                      })}
 
-                      <div className="likes-time-container">
-                        <div className="likes">
-                          {blog.Likes.includes(user ? user.uid : "") ? (
-                            <FaThumbsUp
-                              className="heart"
-                              onClick={() => {
-                                letUsersLike(blog);
-                              }}
-                            />
-                          ) : (
-                            <FaRegThumbsUp
-                              className=" heart"
-                              onClick={() => {
-                                letUsersLike(blog);
-                              }}
-                            />
-                          )}
+                    <div className="likes-time-container">
+                      <div className="likes">
+                        {blog.Likes.includes(user ? user.uid : "") ? (
+                          <FaThumbsUp
+                            className="heart"
+                            onClick={() => {
+                              letUsersLike(blog);
+                            }}
+                          />
+                        ) : (
+                          <FaRegThumbsUp
+                            className=" heart"
+                            onClick={() => {
+                              letUsersLike(blog);
+                            }}
+                          />
+                        )}
 
-                          <p className="like-counter">{blog.Likes.length}</p>
+                        <p className="like-counter">{blog.Likes.length}</p>
 
-                          <p>
-                            {blog.Likes > 0 ? blog.Likes : ""}
+                        <p>
+                          {blog.Likes > 0 ? blog.Likes : ""}
 
-                            {blog.Likes < 2 ? " like" : " likes"}
-                          </p>
-                        </div>
-                        <p className="time">
-                          {blog.timestamp.toDate().toDateString()}
+                          {blog.Likes < 2 ? " like" : " likes"}
                         </p>
                       </div>
+                      <p className="time">
+                        {blog.timestamp.toDate().toDateString()}
+                      </p>
                     </div>
-                  </>
+                  </div>
                 );
               })
             : ""}

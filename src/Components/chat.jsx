@@ -407,10 +407,11 @@ function Chat() {
           {searchResults.length ? (
             <div className="userSearchList-container">
               {searchResults &&
-                searchResults.map((friend, index) => {
-                  return users.map((user) => {
+                searchResults.map((friend) => {
+                  return users.map((user, index) => {
                     return user.userId === friend ? (
                       <div
+                        key={index}
                         className="user-container"
                         onClick={() => {
                           handleSearchSelect(user);
@@ -438,13 +439,13 @@ function Chat() {
               {users
                 ? users.map((soloUser) => {
                     return chats
-                      ? chats.map((chatDoc) => {
+                      ? chats.map((chatDoc, index) => {
                           return (soloUser.userId > user.uid
                             ? soloUser.userId + user.uid
                             : user.uid + soloUser.userId) === chatDoc.id ? (
                             shareBoolean !== true ? (
                               <div
-                                key={chatDoc.id}
+                                key={index}
                                 className={
                                   selectedMate.userId !== soloUser.userId
                                     ? "user-container"
@@ -472,6 +473,7 @@ function Chat() {
                                     ? "user-container"
                                     : "user-containerSelected"
                                 }
+                                key={index}
                               >
                                 <img
                                   className="userImage-container"
@@ -502,7 +504,7 @@ function Chat() {
                 <div className="shareInfo-Container">
                   <div className="friendsName-container">
                     {participant &&
-                      participant.map((friend, index) => {
+                      participant.map((friend) => {
                         return users.map((person) => {
                           return person.userId === friend ? (
                             <div
@@ -562,7 +564,6 @@ function Chat() {
           <div className="chat-display">
             {selected === true ? (
               <div className="message-container">
-                {/* <ScrollableFeed> */}
                 {chats
                   ? chats.map((chat) => {
                       return chat.id === channelId.id
@@ -570,6 +571,7 @@ function Chat() {
                             if (message.text !== "") {
                               return (
                                 <Draggable
+                                  key={index}
                                   bounds={{ left: 0, right: 100 }}
                                   position={{ x: 0, y: 0 }}
                                   onDrag={(e, data) => {
@@ -589,7 +591,8 @@ function Chat() {
                                   >
                                     <div
                                       className="messageShaper"
-                                      key={message.userChatId}
+                                      // key={message.userChatId}
+                                      key={message.createdAt}
                                     >
                                       {message.userChatId === user.uid ? (
                                         <>
@@ -661,7 +664,7 @@ function Chat() {
                                   className="messageShaper-tagged"
                                   // this ref is important
                                   ref={ref}
-                                  key={message.userChatId}
+                                  key={message.createdAt4}
                                 >
                                   {message.userChatId === user.uid ? (
                                     <>
@@ -891,183 +894,10 @@ function Chat() {
                                 </div>
                               );
                             }
-                            //   return message.text !== "" ? (
-                            //     <div
-                            //       className="messageShaper"
-                            //       ref={ref}
-                            //       key={message.userChatId}
-                            //     >
-                            //       {message.userChatId === user.uid ? (
-                            //         <>
-                            //           <div
-                            //             onDoubleClick={() => {
-                            //               taggMe(message);
-                            //             }}
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "sender"
-                            //                 : "receiver"
-                            //             }
-                            //           >
-                            //             <p>{message.text}</p>
-
-                            //             {message.isSeen === true ? (
-                            //               <BiCheckDouble className="doubleTicks-seen" />
-                            //             ) : (
-                            //               <BiCheckDouble className="doubleTicks-notSeen" />
-                            //             )}
-                            //           </div>
-                            //           <div
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "triangle-right"
-                            //                 : "triangle-left"
-                            //             }
-                            //           ></div>
-                            //         </>
-                            //       ) : (
-                            //         <>
-                            //           <div
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "triangle-right"
-                            //                 : "triangle-left"
-                            //             }
-                            //           ></div>
-                            //           <div
-                            //             onDoubleClick={() => {
-                            //               taggMe(message);
-                            //             }}
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "sender"
-                            //                 : "receiver"
-                            //             }
-                            //           >
-                            //             <p>{message.text}</p>
-                            //           </div>
-                            //         </>
-                            //       )}
-                            //     </div>
-                            //   ) : (
-                            //     // for blog
-                            //     <div className="messageShaper-blog" ref={ref}>
-                            //       {message.userChatId === user.uid ? (
-                            //         <>
-                            //           <div
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "sender-blog"
-                            //                 : "receiver-blog"
-                            //             }
-                            //           >
-                            //             <div className="shareBlog-container">
-                            //               <div className="shareBlogImg-container">
-                            //                 <img
-                            //                   className="shareBlog-img"
-                            //                   src={message.blog.blog.themeImg}
-                            //                   alt="theme"
-                            //                 />
-                            //               </div>
-                            //               <div className="shareBlog-description">
-                            //                 <p className="description-title">
-                            //                   {message.blog.blog.title}
-                            //                 </p>
-                            //                 <p className="description-content">
-                            //                   {message.blog.blog.content}
-                            //                 </p>
-                            //               </div>
-                            //             </div>
-                            //             <div className="Liknk-seen-container">
-                            //               <div className="shareBlog-Link">
-                            //                 <Link
-                            //                   className="ReadMoreLink"
-                            //                   to="/singleBlog"
-                            //                   state={{ blog: message.blog.blog }}
-                            //                 >
-                            //                   <p
-                            //                     style={{ paddingTop: "2px" }}
-                            //                     className="ShareReadText"
-                            //                   >
-                            //                     Read more...
-                            //                   </p>
-                            //                 </Link>
-                            //               </div>
-
-                            //               {message.isSeen === true ? (
-                            //                 <BiCheckDouble className="blogDoubleTicks-seen" />
-                            //               ) : (
-                            //                 <BiCheckDouble className="blogDoubleTicks-notSeen" />
-                            //               )}
-                            //             </div>
-                            //           </div>
-                            //           <div
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "triangle-right"
-                            //                 : "triangle-left"
-                            //             }
-                            //           ></div>
-                            //         </>
-                            //       ) : (
-                            //         <>
-                            //           <div
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "triangle-right"
-                            //                 : "triangle-left"
-                            //             }
-                            //           ></div>
-                            //           <div
-                            //             className={
-                            //               message.userChatId === user.uid
-                            //                 ? "sender-blog"
-                            //                 : "receiver-blog"
-                            //             }
-                            //           >
-                            //             <div className="shareBlog-container">
-                            //               <div className="shareBlogImg-container">
-                            //                 <img
-                            //                   className="shareBlog-img"
-                            //                   src={message.blog.blog.themeImg}
-                            //                   alt="theme"
-                            //                 />
-                            //               </div>
-                            //               <div className="shareBlog-description">
-                            //                 <p className="description-title">
-                            //                   {message.blog.blog.title}
-                            //                 </p>
-                            //                 <p className="description-content">
-                            //                   {message.blog.blog.content}
-                            //                 </p>
-                            //               </div>
-                            //             </div>
-                            //             <div className="Liknk-seen-container">
-                            //               <div className="shareBlog-Link">
-                            //                 <Link
-                            //                   className="ReadMoreLink"
-                            //                   to="/singleBlog"
-                            //                   state={{ blog: message.blog.blog }}
-                            //                 >
-                            //                   <p
-                            //                     style={{ paddingTop: "2px" }}
-                            //                     className="ShareReadText"
-                            //                   >
-                            //                     Read more...
-                            //                   </p>
-                            //                 </Link>
-                            //               </div>
-                            //             </div>
-                            //           </div>
-                            //         </>
-                            //       )}
-                            //     </div>
-                            //   );
                           })
                         : "";
                     })
                   : ""}
-                {/* </ScrollableFeed> */}
               </div>
             ) : (
               <div className="message-container-text">

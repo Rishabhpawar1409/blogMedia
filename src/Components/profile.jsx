@@ -22,8 +22,6 @@ function Profile() {
 
   const [profile, setProfile] = useState();
   const [chats, setChats] = useState();
-  const [anchor, setAnchor] = useState(null);
-  const [anchor2, setAnchor2] = useState(null);
   const [newProfile, setNewProfile] = useState(true);
 
   useEffect(() => {
@@ -124,16 +122,6 @@ function Profile() {
       });
     }
   };
-  const handleFollowerClick = () => {
-    setAnchor(true);
-  };
-  const handleFollowingClick = () => {
-    setAnchor2(true);
-  };
-  const handleClose = () => {
-    setAnchor(false);
-    setAnchor2(false);
-  };
 
   return (
     <div className="profile-window">
@@ -156,158 +144,18 @@ function Profile() {
                       />
                     </div>
                     <div className="connections-container">
-                      <p
-                        className="followers-container"
-                        onClick={() => {
-                          handleFollowerClick();
-                        }}
-                      >
+                      <p className="followers-container">
                         Followers : {person.followers.length}
                       </p>
 
-                      <p
-                        className="following-container"
-                        onClick={() => {
-                          handleFollowingClick();
-                        }}
-                      >
+                      <p className="following-container">
                         Following : {person.following.length}
                       </p>
                     </div>
-                    {/* <Popover
-                      PaperProps={{
-                        style: {
-                          width: "250px",
-                          marginLeft: "26.5rem",
-                          height: "fitContent",
-                          textAlign: "center",
-                        },
-                      }}
-                      open={Boolean(anchor)}
-                      anchorEl={anchor}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "center",
-                        horizontal: "left",
-                      }}
-                    >
-                      {person.followers.length ? (
-                        person.followers.map((connection) => {
-                          return profile.map((soloUser) => {
-                            return soloUser.userId === connection ? (
-                              <div
-                                className="connectionList-container"
-                                key={soloUser.userId}
-                              >
-                                <img
-                                  className="userImage"
-                                  src={soloUser.userAvatar}
-                                  alt="avatar"
-                                />
-                                <Link
-                                  to={{
-                                    pathname: "/profile",
-                                    hash: "#singleUser",
-                                  }}
-                                  style={{
-                                    textDecoration: "none",
-                                    color: "black",
-                                  }}
-                                  state={{
-                                    profileUser: {
-                                      userId: soloUser.userId,
-                                      userEmail: soloUser.userEmail,
-                                    },
-                                  }}
-                                >
-                                  <p
-                                    onClick={() => setAnchor(false)}
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    {soloUser.userName}
-                                  </p>
-                                </Link>
-                              </div>
-                            ) : (
-                              ""
-                            );
-                          });
-                        })
-                      ) : (
-                        <p>No followers!</p>
-                      )}
-                    </Popover>
-
-                    <Popover
-                      PaperProps={{
-                        style: {
-                          width: "250px",
-                          marginLeft: "26.5rem",
-                          height: "fitContent",
-                          textAlign: "center",
-                        },
-                      }}
-                      open={Boolean(anchor2)}
-                      anchorEl={anchor2}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "center",
-                        horizontal: "left",
-                      }}
-                    >
-                      {person.following.length ? (
-                        person.following.map((connection) => {
-                          return profile.map((soloUser) => {
-                            return soloUser.userId === connection ? (
-                              <div
-                                className="connectionList-container"
-                                key={soloUser.userId}
-                              >
-                                <img
-                                  className="userImage"
-                                  src={soloUser.userAvatar}
-                                  alt="avatar"
-                                />
-                                <Link
-                                  to={{
-                                    pathname: "/profile",
-                                    hash: "#singleUser",
-                                  }}
-                                  style={{
-                                    textDecoration: "none",
-                                    color: "black",
-                                  }}
-                                  state={{
-                                    profileUser: {
-                                      userId: soloUser.userId,
-                                      userEmail: soloUser.userEmail,
-                                    },
-                                  }}
-                                >
-                                  <p
-                                    onClick={() => {
-                                      handleClose();
-                                    }}
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    {soloUser.userName}
-                                  </p>
-                                </Link>
-                              </div>
-                            ) : (
-                              ""
-                            );
-                          });
-                        })
-                      ) : (
-                        <p>No following!</p>
-                      )}
-                    </Popover> */}
-
                     {profile &&
-                      profile.map((checker, index) => {
+                      profile.map((checker) => {
                         return checker.userId === user.uid ? (
-                          <div key={index}>
+                          <div key={checker.userId}>
                             {person.userId !== user.uid ? (
                               person.followers.includes(user.uid) ? (
                                 <button
@@ -359,16 +207,12 @@ function Profile() {
                           ""
                         );
                       })}
-
                     <p className="profile-name">{person.userEmail}</p>
-
                     <p className="profile-name">{person.userName}</p>
-
                     <div className="profile-location-container">
                       <MdLocationOn className="locationIcon" />
                       <p>{person.userCountry}</p>
                     </div>
-
                     <div className="profile-joiningDate">
                       <BsCalendarEvent className="calendar" />
                       <p>{person.joinedOn.toDate().toDateString()}</p>
@@ -390,20 +234,29 @@ function Profile() {
                   <div className="allProfileBlogs-container" key={index}>
                     {person.userBlogs.map((blog, index) => {
                       return (
-                        <div key={index}>
-                          <div className="profile-blogs" key={blog.bloId}>
+                        <div key={blog.blogId}>
+                          <div className="profile-blogs">
                             <img
                               className="profile-blog-background"
                               src={blog.themeImg}
                               alt="Background Theme"
                             />
                             <div className="profileBlog-title">
-                              <p>{blog.title}</p>
+                              {/* <p>{blog.title}</p> */}
+                              <p
+                                dangerouslySetInnerHTML={{ __html: blog.title }}
+                              />
                             </div>
                             <div className="profileBlog-content">
-                              <p className="profileBlog-content-text">
+                              {/* <p className="profileBlog-content-text">
                                 {blog.content}
-                              </p>
+                              </p> */}
+                              <p
+                                className="profileBlog-content-text"
+                                dangerouslySetInnerHTML={{
+                                  __html: blog.content,
+                                }}
+                              />
                             </div>
 
                             <div className="blog-actions">

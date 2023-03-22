@@ -25,7 +25,7 @@ function SingleBlog() {
               users &&
               users.map((user) => {
                 return user.userId === personLiked ? (
-                  <div className="userInfo-container">
+                  <div className="userInfo-container" key={user.userId}>
                     <img
                       className="likeUserImg"
                       src={
@@ -52,10 +52,12 @@ function SingleBlog() {
           alt="background of a blog"
         />
         <div className="blog-title">
-          <p>{blog.title}</p>
+          {/* <p>{blog.title}</p> */}
+          <p dangerouslySetInnerHTML={{ __html: blog.title }} />
         </div>
         <div className="blog-content">
-          <p className="">{blog.content}</p>
+          {/* <p className="">{blog.content}</p> */}
+          <p dangerouslySetInnerHTML={{ __html: blog.content }} />
         </div>
       </div>
       <div className="singleBlogComment-container">
