@@ -31,8 +31,6 @@ function OwnBlog() {
     id: randomTheme.id,
     image: randomTheme.image,
   });
-  const [value, setValue] = useState("");
-  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     getUserData();
@@ -46,7 +44,8 @@ function OwnBlog() {
             return blog.edit === true
               ? (setTitle(blog.title),
                 setContent(blog.content),
-                setnewImage(blog.themeImg),
+                setSelectedTheme(blog.themeImg),
+                // setnewImage(blog.themeImg),
                 setEdit(true),
                 setEditBlog(blog),
                 updateDoc(doc(db, "blogs", blog.id), {
@@ -76,57 +75,65 @@ function OwnBlog() {
     setContent(e.target.value);
   };
   const titleText = title.length === 0;
-  const contentText = content.length < 50;
+  const contentText = content.length < 300;
 
   const handleSave = async () => {
+    console.log(selectedTheme.image);
     await updateDoc(doc(db, "blogs", editBlog.id), {
       ...editBlog,
       edit: false,
       title,
       content,
-      themeImg: newimage,
+      themeImg: selectedTheme,
     });
 
-    users.map(async (soloUser) => {
-      return soloUser.userId === user.uid
-        ? await updateDoc(doc(db, "users", soloUser.id), {
-            ...soloUser,
-            userBlogs: [
-              ...soloUser.userBlogs.map((checker) => {
-                return checker.blogId === editBlog.blogId
-                  ? { ...checker, title, content, themeImg: newimage }
-                  : checker;
-              }),
-            ],
-          })
-        : soloUser;
-    });
+    users &&
+      users.map(async (soloUser) => {
+        return soloUser.userId === user.uid
+          ? await updateDoc(doc(db, "users", soloUser.id), {
+              ...soloUser,
+              userBlogs: [
+                ...soloUser.userBlogs.map((checker) => {
+                  return checker.blogId === editBlog.blogId
+                    ? {
+                        ...checker,
+                        title,
+                        content,
+                        themeImg: selectedTheme,
+                      }
+                    : checker;
+                }),
+              ],
+            })
+          : soloUser;
+      });
   };
 
   const handleCreateBlog = async () => {
-    console.log("value:", value);
     let avatar;
-    users.map((checker) => {
-      if (checker.userId === user.uid) {
-        avatar = checker.userAvatar;
-      }
-    });
+    users &&
+      users.map((checker) => {
+        if (checker.userId === user.uid) {
+          avatar = checker.userAvatar;
+        }
+      });
     let name;
-    users.map((checker) => {
-      if (checker.userId === user.uid) {
-        name = checker.userName;
-      }
-    });
+    users &&
+      users.map((checker) => {
+        if (checker.userId === user.uid) {
+          name = checker.userName;
+        }
+      });
 
     await addDoc(collection(db, "blogs"), {
       // title,
-      title: inputValue,
+      title,
       blogId: id,
       // content,
-      content: value,
+      content,
       Likes: [],
       comments: [],
-      themeImg: newimage,
+      themeImg: selectedTheme,
       timestamp: Timestamp.now(),
       edit: false,
       userInfo: {
@@ -136,31 +143,32 @@ function OwnBlog() {
         userName: name,
       },
     });
-    users.map(async (singleUser) => {
-      return singleUser.userId === user.uid
-        ? await updateDoc(doc(db, "users", singleUser.id), {
-            userAvatar: singleUser.userAvatar,
-            userName: singleUser.userName,
-            userBlogs: [
-              ...singleUser.userBlogs,
-              {
-                // title,
-                title: inputValue,
-                content: value,
-                blogId: id,
-                Likes: [],
-                comments: [],
-                themeImg: newimage,
-              },
-            ],
-            userEmail: singleUser.userEmail,
-            userCountry: singleUser.userCountry,
-            userStatus: singleUser.userStatus,
-            userFavBlogs: [...singleUser.userFavBlogs],
-            userId: singleUser.userId,
-          })
-        : "";
-    });
+    users &&
+      users.map(async (singleUser) => {
+        return singleUser.userId === user.uid
+          ? await updateDoc(doc(db, "users", singleUser.id), {
+              userAvatar: singleUser.userAvatar,
+              userName: singleUser.userName,
+              userBlogs: [
+                ...singleUser.userBlogs,
+                {
+                  // title,
+                  title,
+                  content,
+                  blogId: id,
+                  Likes: [],
+                  comments: [],
+                  themeImg: selectedTheme,
+                },
+              ],
+              userEmail: singleUser.userEmail,
+              userCountry: singleUser.userCountry,
+              userStatus: singleUser.userStatus,
+              userFavBlogs: [...singleUser.userFavBlogs],
+              userId: singleUser.userId,
+            })
+          : "";
+      });
   };
 
   const handleSelectImage = (theme) => {
@@ -170,7 +178,7 @@ function OwnBlog() {
     <div className="ownBlog-window">
       <div className="first-container">
         <div className="theme-container">
-          {data.length !== 0 &&
+          {data &&
             data.map((theme, index) => {
               return selectedTheme.id === theme.id ? (
                 // Theme that is selected!
@@ -181,6 +189,7 @@ function OwnBlog() {
                 >
                   <div className="first-child-container">
                     <img
+                      loading="lazy"
                       style={{
                         height: "100%",
                         width: "100%",
@@ -205,6 +214,7 @@ function OwnBlog() {
                   style={index % 2 !== 0 ? { marginRight: "5px" } : {}}
                 >
                   <img
+                    loading="lazy"
                     className="theme-image"
                     src={theme.image}
                     alt={`theme-${index}`}
@@ -215,8 +225,6 @@ function OwnBlog() {
                 </div>
               );
             })}
-          <div className="theme">6</div>
-          <div className="theme">7</div>
         </div>
         <div>
           <p
@@ -233,7 +241,7 @@ function OwnBlog() {
               <Link to="/">
                 <button
                   className="createBlog"
-                  // disabled={titleText || contentText}
+                  disabled={titleText || contentText}
                   onClick={() => {
                     handleSave();
                   }}
@@ -246,7 +254,7 @@ function OwnBlog() {
             <div className="createBtn-container">
               <Link to="/">
                 <button
-                  // disabled={titleText || contentText}
+                  disabled={titleText || contentText}
                   className="createBlog"
                   onClick={() => {
                     handleCreateBlog();
@@ -274,15 +282,15 @@ function OwnBlog() {
           <ReactQuill
             theme="snow"
             placeholder="Give title to your blog"
-            value={inputValue}
-            onChange={setInputValue}
+            value={title}
+            onChange={setTitle}
             className="editor-box-forTitle"
           />
           <ReactQuill
             theme="snow"
-            placeholder="Enter text here..."
-            value={value}
-            onChange={setValue}
+            placeholder="Enter text here... min char(300)"
+            value={content}
+            onChange={setContent}
             className="editor-box-forContent"
           />
         </div>

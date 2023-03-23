@@ -57,7 +57,7 @@ function Favourite() {
               <div className="blog-container" key={blog.id}>
                 <img
                   className="image"
-                  src={blog.themeImg}
+                  src={blog.themeImg.image}
                   alt="background of a blog"
                 />
                 <div className="userName-container">

@@ -152,7 +152,7 @@
   grid-template-columns: repeat(2, 50%);
 }
 .theme{
-  background-color: yellow;
+  background-color: whitesmoke;
   height: 173.25px;
   border-radius: 5px;
   cursor: pointer;

@@ -19,3 +19,89 @@
   justify-content: center;
   align-items: center;
 }
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: calc(15px / 2);
+ 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #E96479;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+  background-color: white;
+}
+
+/* jhbhjbjh */
+/* ndbjdjhb */
+
+/********** Range Input Styles **********/
+/*Range Reset*/
+input[type="range"] {
+   -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    width: 15rem;
+}
+
+/* Removes default focus */
+input[type="range"]:focus {
+  outline: none;
+}
+
+/***** Chrome, Safari, Opera and Edge Chromium styles *****/
+/* slider track */
+input[type="range"]::-webkit-slider-runnable-track {
+   background-color: #E96479;
+   border-radius: 0.5rem;
+   height: 0.25rem;  
+}
+
+/* slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+   appearance: none;
+   margin-top: -2px; /* Centers thumb on the track */
+
+   /*custom styles*/
+   background-color: #E96479;
+   height: 0.5rem;
+   width: 0.5rem;
+   border-radius: 50%;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {   
+  border: 0.25px solid #E96479;
+  outline: 2px solid #E96479;
+  outline-offset: 0.125rem; 
+}
+
+/******** Firefox styles ********/
+/* slider track */
+input[type="range"]::-moz-range-track {
+   background-color: #E96479;
+   border-radius: 0.5rem;
+   height: 0.5rem;
+}
+
+/* slider thumb */
+input[type="range"]::-moz-range-thumb {
+   border: none; /*Removes extra border that FF applies*/
+   border-radius: 0; /*Removes default border-radius that FF applies*/
+
+   /*custom styles*/
+   height: 2rem;
+   width: 1rem;
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  border: 1px solid #E96479;
+  outline: 3px solid #E96479;
+  outline-offset: 0.125rem; 
+}

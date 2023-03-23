@@ -28,17 +28,19 @@ function EditProfile() {
 
   const { user } = useUserAuth();
   useEffect(() => {
-    users &&
-      users.map((checker) => {
-        return checker.userId === user.uid
-          ? (setUserName(checker.userName),
-            setCurrUser(checker),
-            setUserStatus(checker.userStatus),
-            setUserAvatar(checker.userAvatar),
-            setUserLocation(checker.userCountry))
-          : "";
-      });
-  }, [users, user.uid]);
+    if (user) {
+      users &&
+        users.map((checker) => {
+          return checker.userId === user.uid
+            ? (setUserName(checker.userName),
+              setCurrUser(checker),
+              setUserStatus(checker.userStatus),
+              setUserAvatar(checker.userAvatar),
+              setUserLocation(checker.userCountry))
+            : "";
+        });
+    }
+  }, [users, user]);
   useEffect(() => {
     const getUsersData = async () => {
       const get = await getDocs(collection(db, "users"));
@@ -57,7 +59,6 @@ function EditProfile() {
     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
     if (file) {
       if (allowedTypes.includes(file.type)) {
-        console.log("Valid file!");
         setImageFile(file);
       } else console.log("Invalid image, cannot upload!");
     }
@@ -65,13 +66,13 @@ function EditProfile() {
   const handleUploadImage = async () => {
     const id = uuid();
     if (imageFile !== null) {
-      const image = `images/${imageFile.name + id}`;
       const imageRef = ref(storage, `images/${imageFile.name + id}`);
       try {
         await uploadBytes(imageRef, imageFile);
 
         const imageUrl = await getDownloadURL(imageRef);
         setUserAvatar(imageUrl);
+        setImageFile(null);
       } catch (err) {
         console.log("Got error:", err);
       }
@@ -162,7 +163,7 @@ function EditProfile() {
               Upload
             </button>
             <span
-              style={{ cursor: "pointer", marginTop: "0.45rem" }}
+              style={{ cursor: "pointer", marginTop: "0.45rem", color: "red" }}
               onClick={() => {
                 setImageFile(null);
               }}

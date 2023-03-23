@@ -232,13 +232,13 @@ function Profile() {
                     )}
                   </div>
                   <div className="allProfileBlogs-container" key={index}>
-                    {person.userBlogs.map((blog, index) => {
+                    {person.userBlogs.map((blog) => {
                       return (
                         <div key={blog.blogId}>
                           <div className="profile-blogs">
                             <img
                               className="profile-blog-background"
-                              src={blog.themeImg}
+                              src={blog.themeImg.image}
                               alt="Background Theme"
                             />
                             <div className="profileBlog-title">

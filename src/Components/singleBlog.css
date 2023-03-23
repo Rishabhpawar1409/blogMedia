@@ -65,11 +65,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
   border-radius: 20px;
   box-shadow: 5px 5px 8px 1px #aaaaaa;
   overflow-wrap: break-word;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .blog-image {
   width: 100%;
@@ -80,11 +80,14 @@
 .blog-title {
   font-size: 20px;
   position: absolute;
-  margin-bottom: 25rem;
+  margin-bottom: 30rem;
+  width: 100%;
+  text-align: center;
 }
 .blog-content {
   position: relative;
-  width: 400px;
+  margin-top: 1rem;
+  width: 510px;
   height: 400px;
 }
 .likes {

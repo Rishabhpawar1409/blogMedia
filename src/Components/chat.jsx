@@ -42,7 +42,6 @@ function Chat() {
   const [searchResults, setSearchResults] = useState([]);
   const [position, setPosition] = useState({ x: 0 });
   const [taggedMsg, setTaggedMsg] = useState("");
-  const [messages, setMessages] = useState("");
   const [refs, setRefs] = useState("");
 
   const handleChange = (e) => {
@@ -185,7 +184,6 @@ function Chat() {
     //     return acc;
     //   }, {});
     // setRefs(refsOfMessages);
-
     let temp_messages;
     chats &&
       chats.map((chat) => {
@@ -251,7 +249,8 @@ function Chat() {
   const handleValue = (e) => {
     setSearch(e.target.value);
   };
-  const handleTrigger = () => {
+  const handleTrigger = (e) => {
+    e.preventDefault();
     setChannelId("");
     setSelectedMate("");
     users.map((checker) => {
@@ -313,7 +312,7 @@ function Chat() {
         : user.uid + friend.userId;
     return chats.map((chatDoc) => {
       return combineId === chatDoc.id
-        ? (setSearchResults([]), handleSelect(user, chatDoc))
+        ? (setSearchResults([]), handleSelect(friend, chatDoc))
         : "";
     });
   };
@@ -383,7 +382,13 @@ function Chat() {
                 })
               : ""}
           </div>
-          <div className="search-input-btn-conatiner">
+          {/* <div className="search-input-btn-conatiner"> */}
+          <form
+            className="search-input-btn-conatiner"
+            onSubmit={(e) => {
+              handleTrigger(e);
+            }}
+          >
             <input
               className="user-input"
               value={search}
@@ -396,14 +401,15 @@ function Chat() {
             {search.length ? (
               <AiOutlineSearch
                 className="search-user"
-                onClick={() => {
-                  handleTrigger();
+                onClick={(e) => {
+                  handleTrigger(e);
                 }}
               />
             ) : (
               ""
             )}
-          </div>
+          </form>
+          {/* </div> */}
           {searchResults.length ? (
             <div className="userSearchList-container">
               {searchResults &&
@@ -477,7 +483,11 @@ function Chat() {
                               >
                                 <img
                                   className="userImage-container"
-                                  src={soloUser.userAvatar}
+                                  src={
+                                    soloUser.userAvatar === null
+                                      ? "Assets/user.jpg"
+                                      : soloUser.userAvatar
+                                  }
                                   alt="Avatar"
                                 />
                                 <p>{soloUser.userName}</p>
@@ -791,17 +801,32 @@ function Chat() {
                                           <div className="shareBlogImg-container">
                                             <img
                                               className="shareBlog-img"
-                                              src={message.blog.blog.themeImg}
+                                              src={
+                                                message.blog.blog.themeImg.image
+                                              }
                                               alt="theme"
                                             />
                                           </div>
                                           <div className="shareBlog-description">
-                                            <p className="description-title">
+                                            {/* <p className="description-title" >
                                               {message.blog.blog.title}
-                                            </p>
-                                            <p className="description-content">
+                                            </p> */}
+                                            <p
+                                              className="description-title"
+                                              dangerouslySetInnerHTML={{
+                                                __html: message.blog.blog.title,
+                                              }}
+                                            />
+                                            {/* <p className="description-content">
                                               {message.blog.blog.content}
-                                            </p>
+                                            </p> */}
+                                            <p
+                                              className="description-content"
+                                              dangerouslySetInnerHTML={{
+                                                __html:
+                                                  message.blog.blog.content,
+                                              }}
+                                            />
                                           </div>
                                         </div>
                                         <div className="Liknk-seen-container">
@@ -857,17 +882,32 @@ function Chat() {
                                           <div className="shareBlogImg-container">
                                             <img
                                               className="shareBlog-img"
-                                              src={message.blog.blog.themeImg}
+                                              src={
+                                                message.blog.blog.themeImg.image
+                                              }
                                               alt="theme"
                                             />
                                           </div>
                                           <div className="shareBlog-description">
-                                            <p className="description-title">
+                                            {/* <p className="description-title">
                                               {message.blog.blog.title}
-                                            </p>
-                                            <p className="description-content">
+                                            </p> */}
+                                            <p
+                                              className="description-title"
+                                              dangerouslySetInnerHTML={{
+                                                __html: message.blog.blog.title,
+                                              }}
+                                            />
+                                            {/* <p className="description-content">
                                               {message.blog.blog.content}
-                                            </p>
+                                            </p> */}
+                                            <p
+                                              className="description-content"
+                                              dangerouslySetInnerHTML={{
+                                                __html:
+                                                  message.blog.blog.content,
+                                              }}
+                                            />
                                           </div>
                                         </div>
                                         <div className="Liknk-seen-container">

@@ -278,7 +278,7 @@ const Home = () => {
                     <div className="searchBlog-container" key={blogIndex}>
                       <img
                         className="image"
-                        src={blog.themeImg}
+                        src={blog.themeImg.image}
                         alt={blog.title}
                       />
                       <div className="userName-container">
@@ -322,10 +322,15 @@ const Home = () => {
                         </>
                       </div>
                       <div className="title">
-                        <p>{blog.title}</p>
+                        {/* <p>{blog.title}</p> */}
+                        <p dangerouslySetInnerHTML={{ __html: blog.title }} />
                       </div>
                       <div className="content">
-                        <p className="content-text">{blog.content}</p>
+                        {/* <p className="content-text">{blog.content}</p> */}
+                        <p
+                          className="content-text"
+                          dangerouslySetInnerHTML={{ __html: blog.content }}
+                        />
                       </div>
                       <div>
                         <Link
@@ -439,7 +444,7 @@ const Home = () => {
                   <div className="blog-container" key={blog.id}>
                     <img
                       className="image"
-                      src={blog.themeImg}
+                      src={blog.themeImg.image}
                       alt="blog theme"
                     />
                     <div className="userName-container">

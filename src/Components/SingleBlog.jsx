@@ -48,7 +48,7 @@ function SingleBlog() {
       <div className="Singleblog-container">
         <img
           className="blog-image"
-          src={blog.themeImg}
+          src={blog.themeImg.image}
           alt="background of a blog"
         />
         <div className="blog-title">
