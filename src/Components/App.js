@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import About from "./About";
 import "../styles.css";
 import Login from "./login";
 import SignUp from "./signUp";
@@ -42,6 +42,7 @@ export default function App() {
         <Route exact path="/editProfile" element={<EditProfile />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signUp" element={<SignUp />} />
+        <Route exact path="/about" element={<About />} />
 
         <Route
           exact

@@ -68,6 +68,20 @@ function Navbar() {
 
       <div className="nav-actions">
         <div className="container-forLink">
+          <Link to="/about" style={{ textDecoration: "none" }}>
+            <span
+              className="about"
+              style={{
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              About
+            </span>
+          </Link>
+        </div>
+
+        <div className="container-forLink">
           <Link to="/signUp" style={{ textDecoration: "none" }}>
             <span
               className="sign--Up"

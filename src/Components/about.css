@@ -1,0 +1,19 @@
+.about-window{
+    height:100vh;
+    display: flex;
+   justify-content: center;
+}
+.about-section{
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding: 10px;
+    height: fit-content;
+    width: 800px;
+    background-color:#E96479;
+    border-radius: 15px;
+    color: white;
+    font-size: 15px;
+}
+.give-space{
+    margin-top: 1rem;
+}
