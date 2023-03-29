@@ -56,7 +56,8 @@ const About = () => {
         </p>
         <br></br>
         <span>
-          - you canot like the blog, you will be redirected to the profile page.
+          - you cannot like the blog, you will be redirected to the profile
+          page.
         </span>
         <br></br>
         <span>
@@ -70,8 +71,8 @@ const About = () => {
         </span>
         <br></br>
         <span>
-          - you wont't be able to create your own blog, you will be redirected
-          to the peofile page.
+          - you won't be able to create your own blog, you will be redirected to
+          the peofile page.
         </span>
       </div>
     </div>
