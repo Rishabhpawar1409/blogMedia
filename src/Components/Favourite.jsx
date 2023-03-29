@@ -75,11 +75,9 @@ function Favourite() {
                   <p className="userName">{blog.userInfo.userName}</p>
                 </div>
                 <div className="title">
-                  {/* <p>{blog.title}</p> */}
                   <p dangerouslySetInnerHTML={{ __html: blog.title }} />
                 </div>
                 <div className="content">
-                  {/* <p className="content-text">{blog.content}</p> */}
                   <p
                     className="content-text"
                     dangerouslySetInnerHTML={{ __html: blog.content }}

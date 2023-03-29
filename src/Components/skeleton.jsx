@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { db } from "../firebase";
-import { getDocs, collection, doc, updateDoc } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 import { useUserAuth } from "../Context/userAuthContext";
 import "./skeleton.css";
 

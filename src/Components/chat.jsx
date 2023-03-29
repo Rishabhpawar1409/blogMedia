@@ -66,7 +66,6 @@ function Chat() {
   };
 
   const handleSend = async (e) => {
-    console.log("state:", refs);
     e.preventDefault();
     if (input !== "") {
       closeTagg();
@@ -171,19 +170,6 @@ function Chat() {
   }, [location]);
 
   const handleSelect = async (soloUser, chatDoc) => {
-    // setting messages state on selecting the chatId.
-    // chats &&
-    //   chats.map((chat) => {
-    //     return chat.id === channelId.id ? setMessages(chat.messages) : "";
-    //   });
-
-    // const refsOfMessages =
-    //   messages &&
-    //   messages.reduce((acc, value) => {
-    //     acc[value.createdAt.seconds] = createRef();
-    //     return acc;
-    //   }, {});
-    // setRefs(refsOfMessages);
     let temp_messages;
     chats &&
       chats.map((chat) => {
@@ -382,7 +368,7 @@ function Chat() {
                 })
               : ""}
           </div>
-          {/* <div className="search-input-btn-conatiner"> */}
+
           <form
             className="search-input-btn-conatiner"
             onSubmit={(e) => {
@@ -409,7 +395,7 @@ function Chat() {
               ""
             )}
           </form>
-          {/* </div> */}
+
           {searchResults.length ? (
             <div className="userSearchList-container">
               {searchResults &&
@@ -601,7 +587,6 @@ function Chat() {
                                   >
                                     <div
                                       className="messageShaper"
-                                      // key={message.userChatId}
                                       key={message.createdAt}
                                     >
                                       {message.userChatId === user.uid ? (
@@ -808,18 +793,13 @@ function Chat() {
                                             />
                                           </div>
                                           <div className="shareBlog-description">
-                                            {/* <p className="description-title" >
-                                              {message.blog.blog.title}
-                                            </p> */}
                                             <p
                                               className="description-title"
                                               dangerouslySetInnerHTML={{
                                                 __html: message.blog.blog.title,
                                               }}
                                             />
-                                            {/* <p className="description-content">
-                                              {message.blog.blog.content}
-                                            </p> */}
+
                                             <p
                                               className="description-content"
                                               dangerouslySetInnerHTML={{
@@ -889,18 +869,13 @@ function Chat() {
                                             />
                                           </div>
                                           <div className="shareBlog-description">
-                                            {/* <p className="description-title">
-                                              {message.blog.blog.title}
-                                            </p> */}
                                             <p
                                               className="description-title"
                                               dangerouslySetInnerHTML={{
                                                 __html: message.blog.blog.title,
                                               }}
                                             />
-                                            {/* <p className="description-content">
-                                              {message.blog.blog.content}
-                                            </p> */}
+
                                             <p
                                               className="description-content"
                                               dangerouslySetInnerHTML={{

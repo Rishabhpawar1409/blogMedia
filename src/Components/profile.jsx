@@ -242,15 +242,11 @@ function Profile() {
                               alt="Background Theme"
                             />
                             <div className="profileBlog-title">
-                              {/* <p>{blog.title}</p> */}
                               <p
                                 dangerouslySetInnerHTML={{ __html: blog.title }}
                               />
                             </div>
                             <div className="profileBlog-content">
-                              {/* <p className="profileBlog-content-text">
-                                {blog.content}
-                              </p> */}
                               <p
                                 className="profileBlog-content-text"
                                 dangerouslySetInnerHTML={{

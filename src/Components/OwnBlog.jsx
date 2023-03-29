@@ -21,7 +21,6 @@ function OwnBlog() {
   const randomTheme = data[Math.floor(Math.random() * data.length)];
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [newimage, setnewImage] = useState("Assets/new6.png");
   const [edit, setEdit] = useState(false);
   const [currBlogs, setCurrBlogs] = useState("");
   const [users, setUsers] = useState();
@@ -68,17 +67,10 @@ function OwnBlog() {
     setUsers(get.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  const handleTitle = (e) => {
-    setTitle(e.target.value);
-  };
-  const handleContent = (e) => {
-    setContent(e.target.value);
-  };
   const titleText = title.length === 0;
   const contentText = content.length < 300;
 
   const handleSave = async () => {
-    console.log(selectedTheme.image);
     await updateDoc(doc(db, "blogs", editBlog.id), {
       ...editBlog,
       edit: false,
@@ -126,10 +118,8 @@ function OwnBlog() {
       });
 
     await addDoc(collection(db, "blogs"), {
-      // title,
       title,
       blogId: id,
-      // content,
       content,
       Likes: [],
       comments: [],
@@ -152,7 +142,6 @@ function OwnBlog() {
               userBlogs: [
                 ...singleUser.userBlogs,
                 {
-                  // title,
                   title,
                   content,
                   blogId: id,
@@ -296,84 +285,6 @@ function OwnBlog() {
         </div>
       </div>
     </div>
-    // <>
-    //   <div className="imageSlider-container">
-    //     <div className="imageSlider">
-    //       <GrPrevious className="previous-image" onClick={slideLeft} />
-    //       <GrNext className="next-image" onClick={slideRight} />
-    //       <p className="text-background">Choose background for your blog (:</p>
-    //       <img
-    //         className="imageSlider-image"
-    //         src={data[index].image}
-    //         alt={data[index].title}
-    //       />
-    //     </div>
-    //   </div>
-    //   <div className="apply-background-container">
-    //     <button className="apply-background" onClick={handleSelect}>
-    //       Select
-    //     </button>
-    //   </div>
-
-    //   <div className="ownBlogInput-container">
-    //     <div>
-    //       <div className="title-container">
-    //         <p className="myTitle">Title :</p>
-    //         <input
-    //           type="text"
-    //           value={title}
-    //           style={{
-    //             backgroundImage: `url(${newimage})`,
-    //           }}
-    //           className="title-input"
-    //           placeholder="Give title to your blog"
-    //           onChange={handleTitle}
-    //         />
-    //       </div>
-    //       <div className="content-container">
-    //         <textarea
-    //           className="textArea-input"
-    //           value={content}
-    //           placeholder="word limit(35-100)"
-    //           maxLength="1000"
-    //           style={{
-    //             backgroundImage: `url(${newimage})`,
-    //           }}
-    //           onChange={handleContent}
-    //         ></textarea>
-    //       </div>
-    //       {edit === true ? (
-    //         <div className="createBtn-container">
-    //           <Link to="/">
-    //             <button
-    //               className="createBlog"
-    //               disabled={titleText || contentText}
-    //               onClick={() => {
-    //                 handleSave();
-    //               }}
-    //             >
-    //               Save
-    //             </button>
-    //           </Link>
-    //         </div>
-    //       ) : (
-    //         <div className="createBtn-container">
-    //           <Link to="/">
-    //             <button
-    //               disabled={titleText || contentText}
-    //               className="createBlog"
-    //               onClick={() => {
-    //                 handleCreateBlog();
-    //               }}
-    //             >
-    //               Create
-    //             </button>
-    //           </Link>
-    //         </div>
-    //       )}
-    //     </div>
-    //   </div>
-    // </>
   );
 }
 export default OwnBlog;

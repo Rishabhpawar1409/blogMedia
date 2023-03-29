@@ -52,11 +52,9 @@ function SingleBlog() {
           alt="background of a blog"
         />
         <div className="blog-title">
-          {/* <p>{blog.title}</p> */}
           <p dangerouslySetInnerHTML={{ __html: blog.title }} />
         </div>
         <div className="blog-content">
-          {/* <p className="">{blog.content}</p> */}
           <p dangerouslySetInnerHTML={{ __html: blog.content }} />
         </div>
       </div>
