@@ -67,9 +67,6 @@
   align-items: center;
   border-radius: 20px;
   box-shadow: 5px 5px 8px 1px #aaaaaa;
-  overflow-wrap: break-word;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 .blog-image {
   width: 100%;
@@ -86,9 +83,13 @@
 }
 .blog-content {
   position: relative;
-  margin-top: 1rem;
+  border-radius: 10px;
+  margin-top: 3rem;
   width: 510px;
-  height: 400px;
+  height: 440px;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .likes {
   display: flex;

@@ -305,7 +305,9 @@ const Home = () => {
                                 },
                               }}
                             >
-                              {blog.userInfo.userEmail}
+                              {blog.userInfo.userName
+                                ? blog.userInfo.userName
+                                : blog.userInfo.userEmail}
                             </Link>
                           </p>
                           {favBlogsList.includes(blog.blogId) ? (
@@ -369,13 +371,20 @@ const Home = () => {
                       ) : (
                         ""
                       )}
-                      <Link
-                        to={{ pathname: "/chat", hash: "#shareBlog" }}
-                        hash="#shareBlog"
-                        state={{ blog: { blog } }}
-                      >
-                        <TbSend className="shareBtn" />
-                      </Link>
+                      {users.map((checker) => {
+                        return checker.userId === user.uid ? (
+                          <Link
+                            to={{ pathname: "/chat", hash: "#shareBlog" }}
+                            hash="#shareBlog"
+                            state={{ blog: { blog } }}
+                          >
+                            <TbSend className="shareBtn" />
+                          </Link>
+                        ) : (
+                          ""
+                        );
+                      })}
+
                       <div className="likes-time-container">
                         <div className="likes">
                           {blog.Likes.includes(user ? user.uid : "") ? (
