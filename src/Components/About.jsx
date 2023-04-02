@@ -72,7 +72,7 @@ const About = () => {
         <br></br>
         <span>
           - you won't be able to create your own blog, you will be redirected to
-          the peofile page.
+          the profile page.
         </span>
       </div>
     </div>
